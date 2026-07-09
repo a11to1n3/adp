@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulating a collapsing star cluster with AMBER | Anh-Duy Pham</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <!-- Set dark mode before paint to avoid flash -->
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f8fafc;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(219, 234, 254, 0.3) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(224, 231, 255, 0.3) 0px, transparent 50%);
+            background-attachment: fixed;
+            transition: background-color 0.3s ease;
+        }
+
+        .dark body {
+            background-color: #020617;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.25) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(49, 46, 129, 0.25) 0px, transparent 50%);
+        }
+
+        /* Simple article typography */
+        .article-body p {
+            margin-bottom: 1.25rem;
+            line-height: 1.9;
+        }
+
+        .article-body h2 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin: 2.5rem 0 1rem 0;
+        }
+
+        .article-body h3 {
+            font-weight: 600;
+            font-size: 1.125rem;
+            margin: 2rem 0 0.75rem 0;
+        }
+
+        .article-body ul {
+            list-style: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .article-body li {
+            margin-bottom: 0.5rem;
+            line-height: 1.8;
+        }
+
+        .article-body code {
+            font-size: 0.875em;
+            background: #e2e8f0;
+            padding: 0.15em 0.4em;
+            border-radius: 0.25rem;
+        }
+
+        .dark .article-body code {
+            background: #1e293b;
+        }
+
+        .article-body pre {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 1rem 1.25rem;
+            border-radius: 0.75rem;
+            overflow-x: auto;
+            margin-bottom: 1.25rem;
+            font-size: 0.8125rem;
+            line-height: 1.65;
+        }
+
+        .article-body pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .article-body figure {
+            margin: 2rem 0;
+        }
+
+        .article-body figure img {
+            max-width: 100%;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .dark .article-body figure img {
+            border-color: #334155;
+        }
+
+        .article-body figcaption {
+            font-size: 0.8125rem;
+            color: #94a3b8;
+            margin-top: 0.5rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .article-body table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .article-body th,
+        .article-body td {
+            padding: 0.6rem 0.9rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .dark .article-body th,
+        .dark .article-body td {
+            border-color: #334155;
+        }
+
+        .article-body th {
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body
+    class="text-slate-600 dark:text-slate-400 font-sans antialiased selection:bg-blue-100 selection:text-blue-900 dark:selection:bg-blue-900 dark:selection:text-blue-100">
+
+    <!-- Top Nav -->
+    <nav
+        class="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-slate-950/70 border-b border-slate-200/60 dark:border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="../index.html" class="font-serif font-bold text-lg text-slate-900 dark:text-white tracking-tight">Anh-Duy
+                Pham</a>
+            <div class="flex items-center gap-1 sm:gap-2">
+                <a href="../index.html"
+                    class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</a>
+                <a href="../index.html#blog"
+                    class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-blue-600 dark:text-blue-400">Blog</a>
+                <a href="../index.html#publications"
+                    class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Publications</a>
+                <button id="theme-toggle" aria-label="Toggle dark mode"
+                    class="ml-1 p-2.5 rounded-full border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 hover:border-blue-300 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
+                    <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+
+        <!-- Post header -->
+        <header class="mb-10">
+            <a href="../index.html#blog"
+                class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors mb-6">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> All posts
+            </a>
+            <div class="flex items-center gap-3 mb-4">
+                <span
+                    class="px-2 py-1 text-xs font-bold uppercase tracking-wide bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 rounded">Tutorial</span>
+                <span class="text-xs font-mono text-slate-400 dark:text-slate-500">July 2026</span>
+            </div>
+            <h1 class="text-4xl sm:text-5xl font-serif font-bold text-slate-900 dark:text-white tracking-tight leading-tight">
+                Simulating a collapsing star cluster with AMBER — vs Mesa and AgentPy</h1>
+        </header>
+
+        <div class="article-body text-lg text-slate-600 dark:text-slate-400">
+            <p>
+                <a href="https://github.com/a11to1n3/AMBER" target="_blank"
+                    class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">AMBER</a> is my agent-based
+                modelling framework that stores the whole agent population in a
+                <a href="https://pola.rs/" target="_blank"
+                    class="text-blue-600 dark:text-blue-400 hover:underline">Polars</a>-backed columnar table instead of
+                one Python object per agent (<a href="https://arxiv.org/abs/2601.16292" target="_blank"
+                    class="text-blue-600 dark:text-blue-400 hover:underline">paper</a>). In this tutorial we'll use it
+                to simulate a real astrophysical phenomenon — the <strong
+                    class="text-slate-800 dark:text-slate-200">cold collapse and violent relaxation of a
+                    self-gravitating star cluster</strong> — and build the identical model in
+                <a href="https://mesa.readthedocs.io/" target="_blank"
+                    class="text-blue-600 dark:text-blue-400 hover:underline">Mesa</a> and
+                <a href="https://agentpy.readthedocs.io/" target="_blank"
+                    class="text-blue-600 dark:text-blue-400 hover:underline">AgentPy</a> to compare both the code style
+                and the runtime.
+            </p>
+            <p>
+                Gravity is a deliberately nasty choice for an agent-based framework: every star interacts with
+                <em>every other star</em>, all the time. There is no locality to exploit, so an object-per-agent
+                design has to do the O(N²) pair loop in pure Python. A columnar design can hand the same loop to
+                NumPy as one broadcast expression. That contrast is the whole point of this post.
+            </p>
+
+            <h2 class="text-slate-900 dark:text-white">The phenomenon: violent relaxation</h2>
+            <p>
+                Take N stars, place them uniformly in a sphere, and give them almost no initial velocity — a
+                <em>cold</em> start. The cluster has nothing to support it against its own gravity, so it collapses.
+                Stars fall inward, overshoot, and slosh through each other; the rapidly fluctuating gravitational
+                field redistributes their energies (Lynden-Bell's <em>violent relaxation</em>), ejects a few stars
+                into a diffuse halo, and leaves the rest ringing around <strong
+                    class="text-slate-800 dark:text-slate-200">virial equilibrium</strong>.
+            </p>
+            <p>
+                We can watch this happen with one scalar: the virial ratio <code>Q = 2T/|W|</code>, where T is total
+                kinetic and W total potential energy. Q ≈ 0 for a cold cluster, and the virial theorem says Q → 1 in
+                equilibrium. Our simulation starts at Q = 0.013, spikes to ~1.7 at the collapse bounce (around one
+                free-fall time), and then oscillates about 1:
+            </p>
+
+            <figure>
+                <img src="../assets/images/blog-amber-virial.png"
+                    alt="Virial ratio versus time: starts near zero, spikes to ~1.7 at the free-fall time, then oscillates around 1">
+                <figcaption>Virial ratio of the N = 300 cluster over three time units (G = M = R = 1). The collapse
+                    bounce lands almost exactly at the analytic free-fall time t<sub>ff</sub> = π/2 · √(R³/2GM) ≈ 1.11.
+                </figcaption>
+            </figure>
+
+            <figure>
+                <img src="../assets/images/blog-amber-snapshots.png"
+                    alt="Three snapshots of the cluster: diffuse cold sphere, dense collapsed core, virialized core with ejected halo stars">
+                <figcaption>The cluster in the x–y plane: cold sphere (left), maximum collapse (middle), and the
+                    virialized state (right) — note the halo of stars ejected by the collapse bounce.</figcaption>
+            </figure>
+
+            <h2 class="text-slate-900 dark:text-white">Shared physics</h2>
+            <p>
+                All three implementations use the same NumPy helpers, the same initial conditions, and the same
+                leapfrog (kick–drift–kick) integrator with softened gravity, so any difference in output would be a
+                framework bug, not physics. Units are G = 1, total mass M = 1, initial radius R = 1.
+            </p>
+            <pre><code>import numpy as np
+
+N, DT, EPS2, SEED = 300, 0.01, 0.05**2, 42
+M = 1.0 / N  # per-star mass
+
+def initial_conditions(seed=SEED):
+    """Uniform sphere, tiny isotropic velocities (cold start)."""
+    rng = np.random.default_rng(seed)
+    r = rng.random(N) ** (1 / 3)
+    costh = rng.uniform(-1, 1, N)
+    phi = rng.uniform(0, 2 * np.pi, N)
+    sinth = np.sqrt(1 - costh**2)
+    x, y, z = r * sinth * np.cos(phi), r * sinth * np.sin(phi), r * costh
+    v = rng.normal(0, 0.05, (3, N))
+    return x, y, z, v[0], v[1], v[2]
+
+def accelerations(x, y, z):
+    """Softened all-pairs gravity as one (N, N) broadcast."""
+    dx = x[None, :] - x[:, None]
+    dy = y[None, :] - y[:, None]
+    dz = z[None, :] - z[:, None]
+    inv_r3 = (dx**2 + dy**2 + dz**2 + EPS2) ** -1.5
+    np.fill_diagonal(inv_r3, 0.0)
+    return (M * np.sum(dx * inv_r3, axis=1),
+            M * np.sum(dy * inv_r3, axis=1),
+            M * np.sum(dz * inv_r3, axis=1))
+
+def virial_ratio(x, y, z, vx, vy, vz):
+    T = 0.5 * M * np.sum(vx**2 + vy**2 + vz**2)
+    dx = x[None, :] - x[:, None]
+    dy = y[None, :] - y[:, None]
+    dz = z[None, :] - z[:, None]
+    inv_r = (dx**2 + dy**2 + dz**2 + EPS2) ** -0.5
+    np.fill_diagonal(inv_r, 0.0)
+    W = -0.5 * M * M * np.sum(inv_r)
+    return float(2 * T / abs(W))</code></pre>
+
+            <h2 class="text-slate-900 dark:text-white">The AMBER model</h2>
+            <p>
+                In AMBER (<code>pip install ambr</code>), agent state lives in a columnar table, and
+                <code>self.agents</code> is a <em>view</em> onto it. The two verbs that matter here are
+                <code>agents.numpy(...)</code> — pull whole columns out as NumPy arrays in one call — and
+                <code>agents.set(...)</code> — write whole columns back. The entire N-body step is three bulk
+                operations and some NumPy:
+            </p>
+            <pre><code>import ambr as am
+
+class AmberStarCluster(am.Model):
+    # declarative per-step metric -> results['model']
+    model_reporters = {
+        'virial': lambda m: virial_ratio(
+            *m.agents.numpy('x', 'y', 'z', 'vx', 'vy', 'vz')),
+    }
+
+    def setup(self):
+        x, y, z, vx, vy, vz = initial_conditions()
+        self.add_agents(N, x=x, y=y, z=z, vx=vx, vy=vy, vz=vz)
+
+    def step(self):
+        # one bulk read (Polars views are read-only, so no in-place +=)
+        x, y, z, vx, vy, vz = self.agents.numpy('x', 'y', 'z',
+                                                'vx', 'vy', 'vz')
+        # leapfrog: kick - drift - kick
+        ax, ay, az = accelerations(x, y, z)
+        vx = vx + 0.5 * DT * ax; vy = vy + 0.5 * DT * ay; vz = vz + 0.5 * DT * az
+        x = x + DT * vx;         y = y + DT * vy;         z = z + DT * vz
+        ax, ay, az = accelerations(x, y, z)
+        vx = vx + 0.5 * DT * ax; vy = vy + 0.5 * DT * ay; vz = vz + 0.5 * DT * az
+        # one bulk write
+        self.agents.set(x=x, y=y, z=z, vx=vx, vy=vy, vz=vz)
+
+model = AmberStarCluster({'steps': 300, 'seed': SEED, 'show_progress': False})
+results = model.run()
+print(results['model']['virial'].to_list()[-1])  # -> 1.140</code></pre>
+            <p>
+                Notes on the API: <code>add_agents(n, **columns)</code> bulk-creates the population with columnar
+                initial state (array kwargs must have length n, scalars broadcast); <code>model_reporters</code>
+                evaluates once per step into the results table — no manual data collector wiring. There is no
+                per-agent loop anywhere.
+            </p>
+
+            <h2 class="text-slate-900 dark:text-white">The same model in Mesa</h2>
+            <p>
+                Mesa 3.x is the classic object-per-agent design: each star is an object, and the model tells the
+                population to run methods. One subtlety — with in-place per-agent updates, you must split the step
+                into phases (compute all forces first, then integrate) or agents late in the iteration order would
+                feel forces from positions that were already moved:
+            </p>
+            <pre><code>import mesa
+
+class MesaStar(mesa.Agent):
+    def __init__(self, model, x, y, z, vx, vy, vz):
+        super().__init__(model)
+        self.x, self.y, self.z = x, y, z
+        self.vx, self.vy, self.vz = vx, vy, vz
+        self.ax = self.ay = self.az = 0.0
+
+    def compute_force(self):
+        ax = ay = az = 0.0
+        for other in self.model.agents:      # O(N) pure-Python loop,
+            if other is self:                # inside an O(N) dispatch
+                continue                     # -> O(N^2) per phase
+            dx = other.x - self.x
+            dy = other.y - self.y
+            dz = other.z - self.z
+            inv_r3 = (dx*dx + dy*dy + dz*dz + EPS2) ** -1.5
+            ax += M * dx * inv_r3
+            ay += M * dy * inv_r3
+            az += M * dz * inv_r3
+        self.ax, self.ay, self.az = ax, ay, az
+
+    def kick(self):
+        self.vx += 0.5 * DT * self.ax
+        self.vy += 0.5 * DT * self.ay
+        self.vz += 0.5 * DT * self.az
+
+    def drift(self):
+        self.x += DT * self.vx
+        self.y += DT * self.vy
+        self.z += DT * self.vz
+
+class MesaStarCluster(mesa.Model):
+    def __init__(self, seed=SEED):
+        super().__init__(seed=seed)
+        x, y, z, vx, vy, vz = initial_conditions()
+        for i in range(N):
+            MesaStar(self, x[i], y[i], z[i], vx[i], vy[i], vz[i])
+
+    def step(self):
+        self.agents.do('compute_force')  # forces at t
+        self.agents.do('kick')
+        self.agents.do('drift')
+        self.agents.do('compute_force')  # forces at t + dt
+        self.agents.do('kick')</code></pre>
+
+            <h2 class="text-slate-900 dark:text-white">…and in AgentPy</h2>
+            <p>
+                AgentPy reads almost identically to Mesa here; its <code>AgentList</code> broadcasts method calls
+                (<code>self.stars.kick()</code>), which is pleasant, but each call still dispatches into a Python
+                loop over objects:
+            </p>
+            <pre><code>import agentpy as ap
+
+class APStar(ap.Agent):
+    def setup(self, x=0., y=0., z=0., vx=0., vy=0., vz=0.):
+        self.x, self.y, self.z = x, y, z
+        self.vx, self.vy, self.vz = vx, vy, vz
+        self.ax = self.ay = self.az = 0.0
+
+    # compute_force / kick / drift identical to the Mesa agent
+    ...
+
+class APStarCluster(ap.Model):
+    def setup(self):
+        x, y, z, vx, vy, vz = initial_conditions()
+        self.stars = ap.AgentList(self, N, APStar)
+        for i, star in enumerate(self.stars):
+            star.setup(x[i], y[i], z[i], vx[i], vy[i], vz[i])
+
+    def step(self):
+        self.stars.compute_force()
+        self.stars.kick()
+        self.stars.drift()
+        self.stars.compute_force()
+        self.stars.kick()
+        self.record('virial', self._virial())</code></pre>
+
+            <h2 class="text-slate-900 dark:text-white">Do they agree?</h2>
+            <p>
+                Yes — by construction, and verified. All three runs share the seed and the physics helpers, and the
+                per-step virial trajectories match to <strong class="text-slate-800 dark:text-slate-200">3.6 ×
+                    10⁻¹⁵</strong> (accumulated float round-off; the frameworks merely order the same arithmetic
+                slightly differently). This kind of invariant check before timing is the same methodology AMBER's own
+                <a href="https://github.com/a11to1n3/AMBER/tree/main/benchmarks" target="_blank"
+                    class="text-blue-600 dark:text-blue-400 hover:underline">benchmark suite</a> uses: never compare
+                speeds until outputs match.
+            </p>
+
+            <h2 class="text-slate-900 dark:text-white">Benchmarks</h2>
+            <p>
+                N = 300 stars, 300 leapfrog steps (three time units — the full collapse story above), single process,
+                Python 3.11, Apple Silicon. One representative run each:
+            </p>
+            <table class="text-slate-700 dark:text-slate-300">
+                <thead>
+                    <tr>
+                        <th>Framework</th>
+                        <th>Architecture</th>
+                        <th style="text-align:right">Wall time</th>
+                        <th style="text-align:right">vs AMBER</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>AMBER (vectorized)</strong></td>
+                        <td>Columnar (Polars) + NumPy broadcast</td>
+                        <td style="text-align:right"><strong>3.4 s</strong></td>
+                        <td style="text-align:right">1×</td>
+                    </tr>
+                    <tr>
+                        <td>AgentPy 0.1.5</td>
+                        <td>Object per agent</td>
+                        <td style="text-align:right">69 s</td>
+                        <td style="text-align:right">20×</td>
+                    </tr>
+                    <tr>
+                        <td>Mesa 3.3</td>
+                        <td>Object per agent</td>
+                        <td style="text-align:right">75 s</td>
+                        <td style="text-align:right">22×</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h2 class="text-slate-900 dark:text-white">Watch the race</h2>
+            <p>
+                Numbers in a table are easy to shrug off, so here are the three actual runs replayed side by side.
+                Each panel plays back the x–y positions <em>recorded from that framework's own run</em> (every 3rd
+                step, diagnostics off). In <strong class="text-slate-800 dark:text-slate-200">Race</strong> mode,
+                each panel advances at its framework's measured wall-clock speed — AMBER finishes its 300 steps in
+                1.2&nbsp;s of compute while Mesa and AgentPy are still in free fall. In <strong
+                    class="text-slate-800 dark:text-slate-200">Synced</strong> mode the panels step together, so you
+                can verify the trajectories are indistinguishable.
+            </p>
+
+            <div id="race-widget"
+                class="not-prose my-8 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 sm:p-6">
+                <!-- Controls -->
+                <div class="flex flex-wrap items-center gap-2 mb-4">
+                    <div class="inline-flex rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden text-sm font-semibold">
+                        <button id="race-mode-race" class="px-3 py-1.5">Race</button>
+                        <button id="race-mode-sync" class="px-3 py-1.5">Synced</button>
+                    </div>
+                    <button id="race-play"
+                        class="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors">▶ Play</button>
+                    <button id="race-restart"
+                        class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:border-blue-300 dark:hover:border-blue-600 transition-colors">↺ Restart</button>
+                    <label id="race-speed-wrap" class="ml-auto text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2">
+                        time compression
+                        <select id="race-speed"
+                            class="rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2 py-1 text-xs">
+                            <option value="1">1× (real time)</option>
+                            <option value="5" selected>5×</option>
+                            <option value="20">20×</option>
+                        </select>
+                    </label>
+                </div>
+                <!-- Panels -->
+                <div id="race-panels" class="grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
+                <p class="mt-4 text-xs text-slate-400 dark:text-slate-500 leading-relaxed">
+                    Wall-clock times measured on the runs shown (Python 3.11, Apple Silicon, simulation loop only):
+                    AMBER 1.19&nbsp;s, AgentPy 30.9&nbsp;s, Mesa 29.0&nbsp;s for 300 steps at N&nbsp;=&nbsp;300.
+                    Final-frame positions agree across frameworks to 2.4&nbsp;×&nbsp;10⁻¹⁴.
+                </p>
+            </div>
+
+            <p>
+                Two honest caveats. First, all-pairs gravity is O(N²) <em>everywhere</em> — AMBER doesn't change the
+                asymptotics, it changes the constant: the pair interactions run inside NumPy's C kernels instead of
+                the Python interpreter. At N = 3000 the AMBER run takes ~5.7 minutes, while the object-per-agent
+                versions extrapolate to roughly two hours (100× more pairs — we didn't wait). Second, this workload
+                is a <em>best case</em> for vectorization: fully global, fully regular. Models with irregular,
+                hard-to-vectorize behaviours are where Mesa and AgentPy's object model earns its keep — which is why
+                AMBER keeps a buffered object-oriented path (<code>agent_class=</code>, per-agent iteration) so you
+                can mix both styles in one model.
+            </p>
+
+            <h2 class="text-slate-900 dark:text-white">Takeaways</h2>
+            <ul>
+                <li>If your per-step update can be written as array math over the population — flows, diffusion,
+                    global interactions, epidemiology, and yes, gravity — AMBER's view API
+                    (<code>numpy()</code>/<code>set()</code>, <code>where()</code>, <code>scatter_add()</code>) gives
+                    you order-of-magnitude speedups without leaving the model/agent abstraction.</li>
+                <li>The columnar table is also your results table: no data-collector boilerplate, just
+                    <code>model_reporters</code> and a Polars DataFrame out.</li>
+                <li>Keep physics helpers framework-agnostic (plain NumPy, explicit seed) and check output invariants
+                    before you benchmark anything.</li>
+                <li>For much larger N, AMBER 0.4's GPU backend batches ensembles of runs into single device passes —
+                    that's a topic for a future post.</li>
+            </ul>
+            <p>
+                Everything above is runnable as-is — <code>pip install ambr mesa agentpy</code> and paste the physics
+                helpers plus whichever model you want to race. Questions, corrections, PhD-position leads:
+                <a href="mailto:duyanhpham@outlook.com"
+                    class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">email me</a>.
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between">
+                <p class="text-sm text-slate-400 dark:text-slate-600 font-medium">&copy; <span id="year"></span>
+                    Anh-Duy Pham</p>
+                <a href="../index.html#blog"
+                    class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to all posts
+                </a>
+            </div>
+        </footer>
+    </article>
+
+    <script>
+        lucide.createIcons();
+        document.getElementById('year').textContent = new Date().getFullYear();
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.theme = isDark ? 'dark' : 'light';
+        });
+    </script>
+
+    <!-- Recorded trajectories (window.CLUSTER_RACE) -->
+    <script src="../assets/data/star-cluster-race-data.js"></script>
+    <script>
+        (function () {
+            const D = window.CLUSTER_RACE;
+            if (!D) return;
+
+            const RANGE = 1.6;                 // world coords [-RANGE, RANGE]
+            const SYNC_FPS = 18;               // recorded frames per second in Synced mode
+            const F = D.frameCount;
+
+            // --- decode base64 -> Int16Array per framework ---
+            function decode(b64) {
+                const bin = atob(b64);
+                const bytes = new Uint8Array(bin.length);
+                for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+                return new Int16Array(bytes.buffer);
+            }
+
+            const frameworks = D.frameworks.map(f => ({
+                ...f,
+                data: decode(f.b64),
+                secPerFrame: f.wall / F,
+            }));
+
+            // --- build panels ---
+            const panelsEl = document.getElementById('race-panels');
+            frameworks.forEach(f => {
+                const el = document.createElement('div');
+                el.innerHTML = `
+                    <div class="text-sm font-bold text-slate-900 dark:text-white">${f.name}</div>
+                    <div class="text-[11px] text-slate-400 dark:text-slate-500 mb-2">${f.arch}</div>
+                    <div class="relative">
+                        <canvas class="w-full rounded-lg block" style="background:#0f172a"></canvas>
+                        <div class="race-done absolute inset-0 hidden items-center justify-center rounded-lg"
+                             style="background:rgba(15,23,42,0.55)">
+                            <span class="px-2.5 py-1 rounded-full bg-emerald-500 text-white text-xs font-bold">
+                                ✓ done in ${f.wall.toFixed(1)} s</span>
+                        </div>
+                    </div>
+                    <div class="mt-2 h-1.5 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                        <div class="race-bar h-full rounded-full" style="width:0%;background:#2563eb"></div>
+                    </div>
+                    <div class="flex justify-between mt-1 text-[11px] font-mono text-slate-400 dark:text-slate-500">
+                        <span class="race-step">step 0 / ${D.steps}</span>
+                        <span class="race-clock">0.0 s</span>
+                    </div>`;
+                panelsEl.appendChild(el);
+                f.canvas = el.querySelector('canvas');
+                f.ctx = f.canvas.getContext('2d');
+                f.bar = el.querySelector('.race-bar');
+                f.stepEl = el.querySelector('.race-step');
+                f.clockEl = el.querySelector('.race-clock');
+                f.doneEl = el.querySelector('.race-done');
+            });
+
+            function sizeCanvases() {
+                const dpr = window.devicePixelRatio || 1;
+                frameworks.forEach(f => {
+                    const w = f.canvas.clientWidth || 260;
+                    f.canvas.width = w * dpr;
+                    f.canvas.height = w * dpr;   // square
+                    f.px = w * dpr;
+                });
+            }
+
+            function drawFrame(f, idx) {
+                const ctx = f.ctx, px = f.px, n = D.n;
+                ctx.clearRect(0, 0, px, px);
+                const base = idx * n * 2;
+                const s = px / (2 * RANGE);
+                ctx.fillStyle = '#fbbf24';
+                for (let i = 0; i < n; i++) {
+                    const x = f.data[base + 2 * i] / D.scale;
+                    const y = f.data[base + 2 * i + 1] / D.scale;
+                    if (x < -RANGE || x > RANGE || y < -RANGE || y > RANGE) continue;
+                    ctx.fillRect((x + RANGE) * s - 1, (RANGE - y) * s - 1, 2.5, 2.5);
+                }
+            }
+
+            // --- animation state ---
+            let mode = 'race';       // 'race' | 'sync'
+            let playing = false;
+            let tAnim = 0;           // seconds of animation time
+            let last = null;
+            let raf = null;
+
+            const playBtn = document.getElementById('race-play');
+            const speedSel = document.getElementById('race-speed');
+            const speedWrap = document.getElementById('race-speed-wrap');
+            const modeRace = document.getElementById('race-mode-race');
+            const modeSync = document.getElementById('race-mode-sync');
+
+            function frameIndexFor(f) {
+                if (mode === 'sync') return Math.min(F - 1, Math.floor(tAnim * SYNC_FPS));
+                const compress = parseFloat(speedSel.value);
+                return Math.min(F - 1, Math.floor(tAnim * compress / f.secPerFrame));
+            }
+
+            function render() {
+                frameworks.forEach(f => {
+                    const idx = frameIndexFor(f);
+                    drawFrame(f, idx);
+                    const stepNow = Math.min(D.steps, (idx + 1) * D.stride);
+                    f.bar.style.width = (100 * idx / (F - 1)) + '%';
+                    f.stepEl.textContent = `step ${stepNow} / ${D.steps}`;
+                    const wallNow = mode === 'sync'
+                        ? (idx / (F - 1)) * f.wall
+                        : Math.min(f.wall, tAnim * parseFloat(speedSel.value));
+                    f.clockEl.textContent = wallNow.toFixed(1) + ' s';
+                    const done = idx >= F - 1;
+                    f.doneEl.classList.toggle('hidden', !(mode === 'race' && done));
+                    f.doneEl.classList.toggle('flex', mode === 'race' && done);
+                    f.bar.style.background = done ? '#10b981' : '#2563eb';
+                });
+            }
+
+            function allDone() {
+                return frameworks.every(f => frameIndexFor(f) >= F - 1);
+            }
+
+            function tick(ts) {
+                if (!playing) return;
+                if (last !== null) tAnim += (ts - last) / 1000;
+                last = ts;
+                render();
+                if (allDone()) { setPlaying(false); return; }
+                raf = requestAnimationFrame(tick);
+            }
+
+            function setPlaying(p) {
+                playing = p;
+                playBtn.textContent = p ? '❚❚ Pause' : '▶ Play';
+                if (p) { last = null; raf = requestAnimationFrame(tick); }
+                else if (raf) cancelAnimationFrame(raf);
+            }
+
+            function restart() { tAnim = 0; render(); }
+
+            function setMode(m) {
+                mode = m;
+                speedWrap.style.display = m === 'race' ? '' : 'none';
+                [modeRace, modeSync].forEach(b => {
+                    const active = (b === modeRace) === (m === 'race');
+                    b.className = 'px-3 py-1.5 ' + (active
+                        ? 'bg-blue-600 text-white'
+                        : 'text-slate-600 dark:text-slate-300 hover:text-blue-600');
+                });
+                restart();
+            }
+
+            playBtn.addEventListener('click', () => {
+                if (!playing && allDone()) tAnim = 0;
+                setPlaying(!playing);
+            });
+            document.getElementById('race-restart').addEventListener('click', () => { restart(); if (!playing) setPlaying(true); });
+            speedSel.addEventListener('change', restart);
+            modeRace.addEventListener('click', () => setMode('race'));
+            modeSync.addEventListener('click', () => setMode('sync'));
+            window.addEventListener('resize', () => { sizeCanvases(); render(); });
+
+            sizeCanvases();
+            setMode('race');
+        })();
+    </script>
+</body>
+
+</html>

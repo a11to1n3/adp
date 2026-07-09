@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anh-Duy Pham | Doctoral Researcher</title>
+    <title>Anh-Duy Pham | Machine Learning Researcher</title>
+    <meta name="description"
+        content="Anh-Duy Pham — machine learning researcher working on graph-based time series forecasting, agent-based modelling, and generative deep learning. Currently seeking a PhD position in Berlin.">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,8 +21,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
         rel="stylesheet">
 
+    <!-- Set dark mode before paint to avoid flash -->
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -64,6 +74,14 @@
                 radial-gradient(at 0% 0%, rgba(219, 234, 254, 0.3) 0px, transparent 50%),
                 radial-gradient(at 100% 0%, rgba(224, 231, 255, 0.3) 0px, transparent 50%);
             background-attachment: fixed;
+            transition: background-color 0.3s ease;
+        }
+
+        .dark body {
+            background-color: #020617;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.25) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(49, 46, 129, 0.25) 0px, transparent 50%);
         }
 
         /* Custom scrollbar */
@@ -84,11 +102,24 @@
             background: #94a3b8;
         }
 
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
         .glass-panel {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(51, 65, 85, 0.5);
         }
 
         .timeline-line {
@@ -99,77 +130,148 @@
             width: 2px;
             background: #e2e8f0;
         }
+
+        .dark .timeline-line {
+            background: #1e293b;
+        }
+
+        html.scroll-smooth {
+            scroll-padding-top: 84px;
+        }
     </style>
 </head>
 
-<body class="text-slate-600 font-sans antialiased selection:bg-blue-100 selection:text-blue-900">
+<body class="text-slate-600 dark:text-slate-400 font-sans antialiased selection:bg-blue-100 selection:text-blue-900 dark:selection:bg-blue-900 dark:selection:text-blue-100">
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+    <!-- Top Nav -->
+    <nav
+        class="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-slate-950/70 border-b border-slate-200/60 dark:border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="#top" class="font-serif font-bold text-lg text-slate-900 dark:text-white tracking-tight">Anh-Duy
+                Pham</a>
+            <div class="flex items-center gap-1 sm:gap-2">
+                <a href="#top"
+                    class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-blue-600 dark:text-blue-400">Home</a>
+                <a href="#news"
+                    class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">News</a>
+                <a href="#publications"
+                    class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Publications</a>
+                <a href="#blog"
+                    class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Blog</a>
+                <a href="https://scholar.google.com/citations?user=CxMeTj4AAAAJ&hl=en" target="_blank"
+                    class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Scholar</a>
+                <button id="theme-toggle" aria-label="Toggle dark mode"
+                    class="ml-1 p-2.5 rounded-full border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 hover:border-blue-300 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
+                    <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="top" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
 
             <!-- LEFT SIDEBAR: Profile Info -->
             <div class="lg:col-span-4 xl:col-span-3 relative z-10">
-                <div class="sticky top-12 space-y-6 animate-fade-in-up">
+                <div class="sticky top-24 space-y-6 animate-fade-in-up">
 
                     <!-- Profile Card -->
                     <div
-                        class="glass-panel p-8 rounded-3xl shadow-sm text-center lg:text-left transition-all duration-300 hover:shadow-md hover:bg-white/95">
-                        <!-- Avatar / Monogram -->
+                        class="glass-panel p-8 rounded-3xl shadow-sm text-center lg:text-left transition-all duration-300 hover:shadow-md hover:bg-white/95 dark:hover:bg-slate-900/95">
+                        <!-- Avatar -->
                         <div class="relative w-32 h-32 mx-auto lg:mx-0 mb-6 group">
                             <div
-                                class="absolute inset-0 bg-blue-100 rounded-full transform rotate-6 transition-transform group-hover:rotate-12 opacity-50">
+                                class="absolute inset-0 bg-blue-100 dark:bg-blue-900/40 rounded-full transform rotate-6 transition-transform group-hover:rotate-12 opacity-50">
                             </div>
                             <div
-                                class="relative w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900 text-white rounded-full shadow-xl overflow-hidden border-4 border-white">
-                                <img src="assets/images/avatar.jpeg" alt="Profile Photo"
+                                class="relative w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900 text-white rounded-full shadow-xl overflow-hidden border-4 border-white dark:border-slate-800">
+                                <img src="assets/images/avatar-scholar.jpg" alt="Profile Photo"
                                     class="w-full h-full object-cover">
                             </div>
                         </div>
 
-                        <h1 class="text-4xl font-serif font-bold text-slate-900 tracking-tight mb-2 leading-tight">
+                        <h1
+                            class="text-4xl font-serif font-bold text-slate-900 dark:text-white tracking-tight mb-2 leading-tight">
                             Anh-Duy Pham</h1>
-                        <p class="text-blue-600 font-medium mb-6 uppercase tracking-widest text-xs">Doctoral Researcher
+                        <p
+                            class="text-blue-600 dark:text-blue-400 font-medium mb-4 uppercase tracking-widest text-xs">
+                            Machine Learning Researcher
                         </p>
 
-                        <div class="space-y-4 text-sm text-slate-600 mb-8">
+                        <!-- Availability badge -->
+                        <div class="flex justify-center lg:justify-start mb-6">
+                            <span
+                                class="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 rounded-full text-xs font-semibold border border-emerald-200 dark:border-emerald-900">
+                                <span class="relative flex h-2 w-2">
+                                    <span
+                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                </span>
+                                Open to AI/ML PhD positions in Berlin
+                            </span>
+                        </div>
+
+                        <div class="space-y-4 text-sm text-slate-600 dark:text-slate-400 mb-6">
                             <div class="flex items-start justify-center lg:justify-start gap-3 group">
                                 <div
-                                    class="p-2 bg-slate-100 rounded-lg text-slate-500 group-hover:text-blue-600 group-hover:bg-blue-50 transition-colors">
-                                    <i data-lucide="university" class="w-4 h-4"></i>
+                                    class="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-slate-500 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:bg-blue-50 dark:group-hover:bg-blue-950/40 transition-colors">
+                                    <i data-lucide="search" class="w-4 h-4"></i>
                                 </div>
                                 <div class="flex-1 leading-snug">
-                                    <span class="block font-medium text-slate-900">Chair of Logistics and Quantitative
-                                        Methods</span>
-                                    <span class="text-xs text-slate-500">Julius-Maximilians-Universität Würzburg</span>
+                                    <span class="block font-medium text-slate-900 dark:text-white">Seeking PhD
+                                        Position</span>
+                                    <span class="text-xs text-slate-500 dark:text-slate-500">Artificial Intelligence ·
+                                        Machine Learning</span>
                                 </div>
                             </div>
                             <div class="flex items-center justify-center lg:justify-start gap-3 group">
                                 <div
-                                    class="p-2 bg-slate-100 rounded-lg text-slate-500 group-hover:text-blue-600 group-hover:bg-blue-50 transition-colors">
+                                    class="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-slate-500 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:bg-blue-50 dark:group-hover:bg-blue-950/40 transition-colors">
                                     <i data-lucide="map-pin" class="w-4 h-4"></i>
                                 </div>
-                                <span>Würzburg, Germany</span>
+                                <span>Berlin, Germany</span>
                             </div>
                             <div class="flex items-center justify-center lg:justify-start gap-3 group">
                                 <div
-                                    class="p-2 bg-slate-100 rounded-lg text-slate-500 group-hover:text-blue-600 group-hover:bg-blue-50 transition-colors">
+                                    class="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-slate-500 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:bg-blue-50 dark:group-hover:bg-blue-950/40 transition-colors">
                                     <i data-lucide="mail" class="w-4 h-4"></i>
                                 </div>
-                                <a href="mailto:anh-duy.pham@uni-wuerzburg.de"
-                                    class="hover:text-blue-600 transition-colors border-b border-transparent hover:border-blue-200">uni-wuerzburg.de</a>
+                                <a href="mailto:duyanhpham@outlook.com"
+                                    class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors border-b border-transparent hover:border-blue-200 dark:hover:border-blue-800">duyanhpham@outlook.com</a>
                             </div>
                         </div>
 
+                        <!-- Citation Metrics -->
+                        <a href="https://scholar.google.com/citations?user=CxMeTj4AAAAJ&hl=en" target="_blank"
+                            class="grid grid-cols-3 gap-2 pt-6 border-t border-slate-200/60 dark:border-slate-800/60 mb-6 group">
+                            <div class="text-center">
+                                <span
+                                    class="block text-xl font-serif font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">168</span>
+                                <span class="text-[11px] uppercase tracking-wide text-slate-400 dark:text-slate-500">Citations</span>
+                            </div>
+                            <div class="text-center border-x border-slate-200/60 dark:border-slate-800/60">
+                                <span
+                                    class="block text-xl font-serif font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">8</span>
+                                <span class="text-[11px] uppercase tracking-wide text-slate-400 dark:text-slate-500">h-index</span>
+                            </div>
+                            <div class="text-center">
+                                <span
+                                    class="block text-xl font-serif font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">7</span>
+                                <span class="text-[11px] uppercase tracking-wide text-slate-400 dark:text-slate-500">i10-index</span>
+                            </div>
+                        </a>
+
                         <!-- Social Links -->
-                        <div class="flex justify-center lg:justify-start gap-3 pt-6 border-t border-slate-200/60">
+                        <div class="flex justify-center lg:justify-start gap-3 pt-6 border-t border-slate-200/60 dark:border-slate-800/60">
                             <a href="https://scholar.google.com/citations?view_op=list_works&hl=en&hl=en&user=CxMeTj4AAAAJ&sortby=pubdate"
                                 target="_blank"
-                                class="p-2.5 bg-white border border-slate-200 rounded-full text-slate-500 hover:border-blue-300 hover:text-blue-600 hover:shadow-sm transition-all transform hover:-translate-y-0.5"
+                                class="p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-full text-slate-500 dark:text-slate-400 hover:border-blue-300 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 hover:shadow-sm transition-all transform hover:-translate-y-0.5"
                                 aria-label="Google Scholar">
                                 <i data-lucide="graduation-cap" class="w-5 h-5"></i>
                             </a>
                             <a href="https://orcid.org/0000-0003-3832-9453" target="_blank"
-                                class="p-2.5 bg-white border border-slate-200 rounded-full text-slate-500 hover:border-emerald-400 hover:text-emerald-700 hover:shadow-sm transition-all transform hover:-translate-y-0.5"
+                                class="p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-full text-slate-500 dark:text-slate-400 hover:border-emerald-400 dark:hover:border-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-400 hover:shadow-sm transition-all transform hover:-translate-y-0.5"
                                 aria-label="ORCID">
                                 <svg viewBox="0 0 24 24" class="w-5 h-5 fill-current">
                                     <path
@@ -177,64 +279,69 @@
                                 </svg>
                             </a>
                             <a href="https://www.linkedin.com/in/duypham1613/" target="_blank"
-                                class="p-2.5 bg-white border border-slate-200 rounded-full text-slate-500 hover:border-blue-400 hover:text-blue-700 hover:shadow-sm transition-all transform hover:-translate-y-0.5"
+                                class="p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-full text-slate-500 dark:text-slate-400 hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-700 dark:hover:text-blue-400 hover:shadow-sm transition-all transform hover:-translate-y-0.5"
                                 aria-label="LinkedIn">
-                                <i data-lucide="linkedin" class="w-5 h-5"></i>
+                                <svg viewBox="0 0 24 24" class="w-5 h-5 fill-current">
+                                    <path
+                                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.114 20.452H3.558V9h3.556v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                                </svg>
                             </a>
                         </div>
                     </div>
 
                     <!-- Research Interests -->
                     <div class="glass-panel p-6 rounded-3xl shadow-sm">
-                        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 ml-1">Focus Areas
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-4 ml-1">
+                            Focus Areas
                         </h3>
                         <div class="flex flex-wrap gap-2">
                             <span
-                                class="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg text-xs font-semibold border border-blue-100">Operations
-                                Research</span>
+                                class="px-3 py-1.5 bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 rounded-lg text-xs font-semibold border border-blue-100 dark:border-blue-900">Generative
+                                AI</span>
                             <span
-                                class="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg text-xs font-semibold border border-blue-100">Graph
+                                class="px-3 py-1.5 bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 rounded-lg text-xs font-semibold border border-blue-100 dark:border-blue-900">Graph
                                 Learning</span>
                             <span
-                                class="px-3 py-1.5 bg-slate-50 text-slate-600 rounded-lg text-xs font-medium border border-slate-100">Agent-based
+                                class="px-3 py-1.5 bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 rounded-lg text-xs font-semibold border border-blue-100 dark:border-blue-900">Agent-based
                                 Modelling</span>
                             <span
-                                class="px-3 py-1.5 bg-slate-50 text-slate-600 rounded-lg text-xs font-medium border border-slate-100">Supply
-                                Chain Management</span>
+                                class="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-lg text-xs font-medium border border-slate-100 dark:border-slate-700">Explainable
+                                AI</span>
                             <span
-                                class="px-3 py-1.5 bg-slate-50 text-slate-600 rounded-lg text-xs font-medium border border-slate-100">Time
+                                class="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-lg text-xs font-medium border border-slate-100 dark:border-slate-700">Time
                                 Series Forecasting</span>
                         </div>
                     </div>
 
                     <!-- Technical Skills -->
                     <div class="glass-panel p-6 rounded-3xl shadow-sm">
-                        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 ml-1">Technical
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-4 ml-1">
+                            Technical
                             Skills</h3>
                         <div class="space-y-3">
                             <div>
-                                <span class="text-xs text-slate-400 block mb-1">Methods</span>
+                                <span class="text-xs text-slate-400 dark:text-slate-500 block mb-1">Methods</span>
                                 <div class="flex flex-wrap gap-2">
                                     <span
-                                        class="px-2 py-1 bg-white border border-slate-200 text-slate-600 rounded text-xs">Generative
+                                        class="px-2 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs">Generative
                                         Deep Learning</span>
                                     <span
-                                        class="px-2 py-1 bg-white border border-slate-200 text-slate-600 rounded text-xs">Computer
+                                        class="px-2 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs">Computer
                                         Vision</span>
                                     <span
-                                        class="px-2 py-1 bg-white border border-slate-200 text-slate-600 rounded text-xs">Explainable
+                                        class="px-2 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs">Explainable
                                         AI (XAI)</span>
                                 </div>
                             </div>
                             <div>
-                                <span class="text-xs text-slate-400 block mb-1">Tools</span>
+                                <span class="text-xs text-slate-400 dark:text-slate-500 block mb-1">Tools</span>
                                 <div class="flex flex-wrap gap-2">
                                     <span
-                                        class="px-2 py-1 bg-white border border-slate-200 text-slate-600 rounded text-xs">Python</span>
+                                        class="px-2 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs">Python</span>
                                     <span
-                                        class="px-2 py-1 bg-white border border-slate-200 text-slate-600 rounded text-xs">PyTorch</span>
+                                        class="px-2 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs">PyTorch</span>
                                     <span
-                                        class="px-2 py-1 bg-white border border-slate-200 text-slate-600 rounded text-xs">LaTeX</span>
+                                        class="px-2 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs">LaTeX</span>
                                 </div>
                             </div>
                         </div>
@@ -246,20 +353,24 @@
             <div class="lg:col-span-8 xl:col-span-9 space-y-16 animate-fade-in-up" style="animation-delay: 0.2s;">
 
                 <!-- About Section -->
-                <section class="relative">
-                    <div class="absolute -left-10 top-0 bottom-0 w-px bg-slate-200 hidden lg:block"></div>
-                    <h2 class="text-3xl font-serif font-bold text-slate-900 mb-6">About Me</h2>
-                    <div class="prose prose-slate max-w-none text-lg leading-loose text-slate-600">
+                <section id="about" class="relative scroll-mt-24">
+                    <div class="absolute -left-10 top-0 bottom-0 w-px bg-slate-200 dark:bg-slate-800 hidden lg:block">
+                    </div>
+                    <h2 class="text-3xl font-serif font-bold text-slate-900 dark:text-white mb-6">About Me</h2>
+                    <div class="prose prose-slate dark:prose-invert max-w-none text-lg leading-loose text-slate-600 dark:text-slate-400">
                         <p class="mb-4">
-                            I am a Doctoral Researcher at the <strong>Chair of Logistics and Quantitative
-                                Methods</strong> at the <strong class="text-slate-800">Julius-Maximilians-Universität
+                            I am a machine learning researcher currently <strong
+                                class="text-emerald-700 dark:text-emerald-400">looking for a PhD position in AI/ML in
+                                Berlin</strong>. Until July 2026, I was a Doctoral Researcher at the <strong
+                                class="dark:text-slate-200">Chair of Logistics and Quantitative Methods</strong> at the
+                            <strong class="text-slate-800 dark:text-slate-100">Julius-Maximilians-Universität
                                 Würzburg</strong>. My research is situated at the intersection of advanced machine
                             learning and operations management.
                         </p>
                         <p class="mb-4">
-                            Specifically, I focus on <strong class="text-blue-700">graph-based time series
+                            Specifically, I focus on <strong class="text-blue-700 dark:text-blue-400">graph-based time series
                                 forecasting</strong> to enable data-driven decision-making in supply chain management. I
-                            combine this with expertise in <strong class="text-blue-700">Agent-based Modelling</strong>
+                            combine this with expertise in <strong class="text-blue-700 dark:text-blue-400">Agent-based Modelling</strong>
                             to simulate and analyze complex economic and environmental systems.
                         </p>
                         <p>
@@ -271,71 +382,185 @@
                     </div>
                 </section>
 
-                <!-- Experience & Education Timeline -->
-                <section>
+                <!-- News -->
+                <section id="news" class="scroll-mt-24">
                     <div class="flex items-end justify-between mb-8">
-                        <h2 class="text-2xl font-serif font-bold text-slate-900">Experience & Education</h2>
-                        <div class="h-px flex-1 bg-slate-200 ml-6 mb-2"></div>
+                        <h2 class="text-2xl font-serif font-bold text-slate-900 dark:text-white">News</h2>
+                        <div class="h-px flex-1 bg-slate-200 dark:bg-slate-800 ml-6 mb-2"></div>
+                    </div>
+
+                    <!--
+                        HOW TO ADD A NEWS ITEM:
+                        Copy one of the <li> blocks below, put it at the TOP of the list,
+                        and edit the date + text. Use class "bg-blue-600" on the dot for
+                        the newest item and "bg-slate-300 dark:bg-slate-700" for older ones.
+                    -->
+                    <ul class="glass-panel rounded-3xl shadow-sm divide-y divide-slate-200/60 dark:divide-slate-800/60 overflow-hidden">
+                        <li class="flex gap-4 items-baseline px-6 py-4">
+                            <span class="shrink-0 w-2 h-2 rounded-full bg-emerald-500 translate-y-[-1px]"></span>
+                            <span class="shrink-0 w-24 text-xs font-mono text-slate-400 dark:text-slate-500">Jul 2026</span>
+                            <p class="text-sm leading-relaxed">Concluded my position at Julius-Maximilians-Universität
+                                Würzburg. I am now <span class="font-semibold text-emerald-700 dark:text-emerald-400">looking
+                                    for an AI/ML PhD position in Berlin</span> — <a href="mailto:duyanhpham@outlook.com"
+                                    class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">get in
+                                    touch</a>!</p>
+                        </li>
+                        <li class="flex gap-4 items-baseline px-6 py-4">
+                            <span class="shrink-0 w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 translate-y-[-1px]"></span>
+                            <span class="shrink-0 w-24 text-xs font-mono text-slate-400 dark:text-slate-500">May 2026</span>
+                            <p class="text-sm leading-relaxed">New preprint: <a
+                                    href="https://arxiv.org/abs/2605.14840" target="_blank"
+                                    class="font-semibold text-blue-600 dark:text-blue-400 hover:underline"><em>"In-Context
+                                        Learning for Data-Driven Censored Inventory Control"</em></a> (with S.
+                                Mukherjee, R. Pibernik, and Y. Xu) is now on arXiv.</p>
+                        </li>
+                        <li class="flex gap-4 items-baseline px-6 py-4">
+                            <span class="shrink-0 w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 translate-y-[-1px]"></span>
+                            <span class="shrink-0 w-24 text-xs font-mono text-slate-400 dark:text-slate-500">2026</span>
+                            <p class="text-sm leading-relaxed"><em>"Interpretable Prosumer Load Forecasting via
+                                    Physics-Informed Kolmogorov-Arnold Networks"</em> (with R.T. Derzbach, A. Dhakal,
+                                and C.M. Flath) accepted at <span class="font-semibold text-slate-900 dark:text-white">ACM
+                                    e-Energy</span>.</p>
+                        </li>
+                        <li class="flex gap-4 items-baseline px-6 py-4">
+                            <span class="shrink-0 w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 translate-y-[-1px]"></span>
+                            <span class="shrink-0 w-24 text-xs font-mono text-slate-400 dark:text-slate-500">Jan 2026</span>
+                            <p class="text-sm leading-relaxed">Preprint of <a href="https://arxiv.org/abs/2601.16292"
+                                    target="_blank"
+                                    class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">AMBER</a>, a
+                                columnar architecture for high-performance agent-based modeling in Python, is now on
+                                arXiv.</p>
+                        </li>
+                        <li class="flex gap-4 items-baseline px-6 py-4">
+                            <span class="shrink-0 w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 translate-y-[-1px]"></span>
+                            <span class="shrink-0 w-24 text-xs font-mono text-slate-400 dark:text-slate-500">2026</span>
+                            <p class="text-sm leading-relaxed">Our paper <em>"When pandemics meet climate risk"</em>
+                                (with P. D'Orazio and S.H. Nguyen) is in press at the <span
+                                    class="font-semibold text-slate-900 dark:text-white">Journal of Economic Dynamics and
+                                    Control</span>.</p>
+                        </li>
+                        <li class="flex gap-4 items-baseline px-6 py-4">
+                            <span class="shrink-0 w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 translate-y-[-1px]"></span>
+                            <span class="shrink-0 w-24 text-xs font-mono text-slate-400 dark:text-slate-500">Dec 2025</span>
+                            <p class="text-sm leading-relaxed"><em>"Belief-Aware Inventory Control with Deep Mixture
+                                    Models"</em> (with M. Beck) presented at the <span
+                                    class="font-semibold text-slate-900 dark:text-white">NeurIPS 2025 MLxOR
+                                    Workshop</span>.</p>
+                        </li>
+                        <li class="flex gap-4 items-baseline px-6 py-4">
+                            <span class="shrink-0 w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 translate-y-[-1px]"></span>
+                            <span class="shrink-0 w-24 text-xs font-mono text-slate-400 dark:text-slate-500">2025</span>
+                            <p class="text-sm leading-relaxed"><a href="https://limesoda.readthedocs.io/en/latest/"
+                                    target="_blank"
+                                    class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">LimeSoDa</a>,
+                                our benchmark dataset collection for digital soil mapping, published in <span
+                                    class="font-semibold text-slate-900 dark:text-white">Geoderma</span>.</p>
+                        </li>
+                        <li class="flex gap-4 items-baseline px-6 py-4">
+                            <span class="shrink-0 w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 translate-y-[-1px]"></span>
+                            <span class="shrink-0 w-24 text-xs font-mono text-slate-400 dark:text-slate-500">Apr 2025</span>
+                            <p class="text-sm leading-relaxed">Joined the <span
+                                    class="font-semibold text-slate-900 dark:text-white">Chair of Logistics and
+                                    Quantitative Methods</span> at Julius-Maximilians-Universität Würzburg as a Doctoral
+                                Researcher.</p>
+                        </li>
+                        <li class="flex gap-4 items-baseline px-6 py-4">
+                            <span class="shrink-0 w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 translate-y-[-1px]"></span>
+                            <span class="shrink-0 w-24 text-xs font-mono text-slate-400 dark:text-slate-500">Jan 2025</span>
+                            <p class="text-sm leading-relaxed"><em>"Evaluating climate-related financial policies'
+                                    impact on decarbonization with machine learning methods"</em> published in <a
+                                    href="https://www.nature.com/articles/s41598-025-85127-7" target="_blank"
+                                    class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">Scientific
+                                    Reports</a>.</p>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Experience & Education Timeline -->
+                <section id="experience" class="scroll-mt-24">
+                    <div class="flex items-end justify-between mb-8">
+                        <h2 class="text-2xl font-serif font-bold text-slate-900 dark:text-white">Experience & Education</h2>
+                        <div class="h-px flex-1 bg-slate-200 dark:bg-slate-800 ml-6 mb-2"></div>
                     </div>
 
                     <div class="relative space-y-8 pl-6">
                         <!-- Vertical Line -->
-                        <div class="absolute left-0 top-2 bottom-2 w-px bg-slate-200"></div>
+                        <div class="absolute left-0 top-2 bottom-2 w-px bg-slate-200 dark:bg-slate-800"></div>
+
+                        <!-- Item 0: Seeking PhD position -->
+                        <div class="relative pl-8 group">
+                            <div
+                                class="absolute left-[-5px] top-2 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-4 ring-white dark:ring-slate-950">
+                            </div>
+                            <div
+                                class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-emerald-100 dark:border-emerald-900/60 shadow-sm hover:shadow-md dark:hover:shadow-slate-900/50 transition-all">
+                                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-2">
+                                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Seeking PhD Position</h3>
+                                    <span class="text-sm font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded">Jul
+                                        2026 - Present</span>
+                                </div>
+                                <div class="text-slate-700 dark:text-slate-300 font-medium mb-2">Berlin, Germany</div>
+                                <p class="text-sm text-slate-500 dark:text-slate-500">Looking for a PhD position in
+                                    artificial intelligence and machine learning. <a
+                                        href="mailto:duyanhpham@outlook.com"
+                                        class="text-emerald-600 dark:text-emerald-400 font-semibold hover:underline">Get
+                                        in touch</a>.</p>
+                            </div>
+                        </div>
 
                         <!-- Item 1: Würzburg -->
                         <div class="relative pl-8 group">
                             <div
-                                class="absolute left-[-5px] top-2 w-2.5 h-2.5 rounded-full bg-blue-600 ring-4 ring-white">
+                                class="absolute left-[-5px] top-2 w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700 group-hover:bg-blue-400 transition-colors ring-4 ring-white dark:ring-slate-950">
                             </div>
                             <div
-                                class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all">
+                                class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md dark:hover:shadow-slate-900/50 transition-all">
                                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-2">
-                                    <h3 class="text-lg font-bold text-slate-900">Doctoral Researcher</h3>
-                                    <span class="text-sm font-mono text-blue-600 bg-blue-50 px-2 py-0.5 rounded">Apr
-                                        2025 - Present</span>
+                                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Doctoral Researcher</h3>
+                                    <span class="text-sm font-mono text-slate-500 dark:text-slate-500">Apr 2025 - Jul 2026</span>
                                 </div>
-                                <div class="text-slate-700 font-medium mb-2">Julius-Maximilians-Universität Würzburg
+                                <div class="text-slate-700 dark:text-slate-300 font-medium mb-2">Julius-Maximilians-Universität Würzburg
                                 </div>
-                                <p class="text-sm text-slate-500">Chair of Logistics and Quantitative Methods.
-                                    Researching graph-based time series forecasting for supply chains.</p>
+                                <p class="text-sm text-slate-500 dark:text-slate-500">Chair of Logistics and Quantitative Methods.
+                                    Researched graph-based time series forecasting for supply chains.</p>
                             </div>
                         </div>
 
                         <!-- Item 2: Osnabrück -->
                         <div class="relative pl-8 group">
                             <div
-                                class="absolute left-[-5px] top-2 w-2.5 h-2.5 rounded-full bg-slate-300 group-hover:bg-blue-400 transition-colors ring-4 ring-white">
+                                class="absolute left-[-5px] top-2 w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700 group-hover:bg-blue-400 transition-colors ring-4 ring-white dark:ring-slate-950">
                             </div>
                             <div
-                                class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all">
+                                class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md dark:hover:shadow-slate-900/50 transition-all">
                                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-2">
-                                    <h3 class="text-lg font-bold text-slate-900">PhD Student</h3>
-                                    <span class="text-sm font-mono text-slate-500">Dec 2023 - Mar 2025</span>
+                                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">PhD Student</h3>
+                                    <span class="text-sm font-mono text-slate-500 dark:text-slate-500">Dec 2023 - Mar 2025</span>
                                 </div>
-                                <div class="text-slate-700 font-medium mb-2">Osnabrück University</div>
-                                <p class="text-sm text-slate-500">Joint Lab Artificial Intelligence & Data Science.</p>
+                                <div class="text-slate-700 dark:text-slate-300 font-medium mb-2">Osnabrück University</div>
+                                <p class="text-sm text-slate-500 dark:text-slate-500">Joint Lab Artificial Intelligence & Data Science.</p>
                             </div>
                         </div>
 
                         <!-- Item 3: Fraunhofer & Masters -->
                         <div class="relative pl-8 group">
                             <div
-                                class="absolute left-[-5px] top-2 w-2.5 h-2.5 rounded-full bg-slate-300 group-hover:bg-blue-400 transition-colors ring-4 ring-white">
+                                class="absolute left-[-5px] top-2 w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700 group-hover:bg-blue-400 transition-colors ring-4 ring-white dark:ring-slate-950">
                             </div>
                             <div
-                                class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all">
+                                class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md dark:hover:shadow-slate-900/50 transition-all">
                                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-2">
-                                    <h3 class="text-lg font-bold text-slate-900">Research Assistant & Master Student
+                                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Research Assistant & Master Student
                                     </h3>
-                                    <span class="text-sm font-mono text-slate-500">2019 - 2023</span>
+                                    <span class="text-sm font-mono text-slate-500 dark:text-slate-500">2019 - 2023</span>
                                 </div>
-                                <ul class="list-disc list-inside text-sm text-slate-600 space-y-1 mt-2">
-                                    <li><strong>M.Sc. Autonomous Systems</strong>, Hochschule Bonn-Rhein-Sieg (Focus:
+                                <ul class="list-disc list-inside text-sm text-slate-600 dark:text-slate-400 space-y-1 mt-2">
+                                    <li><strong class="dark:text-slate-200">M.Sc. Autonomous Systems</strong>, Hochschule Bonn-Rhein-Sieg (Focus:
                                         Generative AI).</li>
-                                    <li><strong>Research Assistant</strong>, Fraunhofer HHI (Biometrics).</li>
-                                    <li><strong>Research Assistant</strong>, Fraunhofer SCAI (ML for CAE Simulations).
+                                    <li><strong class="dark:text-slate-200">Research Assistant</strong>, Fraunhofer HHI (Biometrics).</li>
+                                    <li><strong class="dark:text-slate-200">Research Assistant</strong>, Fraunhofer SCAI (ML for CAE Simulations).
                                     </li>
-                                    <li><strong>Research Assistant</strong>, Ruhr-Universität Bochum (Agent-based
+                                    <li><strong class="dark:text-slate-200">Research Assistant</strong>, Ruhr-Universität Bochum (Agent-based
                                         Economic Modeling).</li>
                                 </ul>
                             </div>
@@ -344,16 +569,16 @@
                         <!-- Item 4: VGU -->
                         <div class="relative pl-8 group">
                             <div
-                                class="absolute left-[-5px] top-2 w-2.5 h-2.5 rounded-full bg-slate-300 group-hover:bg-blue-400 transition-colors ring-4 ring-white">
+                                class="absolute left-[-5px] top-2 w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700 group-hover:bg-blue-400 transition-colors ring-4 ring-white dark:ring-slate-950">
                             </div>
                             <div
-                                class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all">
+                                class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md dark:hover:shadow-slate-900/50 transition-all">
                                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-2">
-                                    <h3 class="text-lg font-bold text-slate-900">Research & Teaching Assistant</h3>
-                                    <span class="text-sm font-mono text-slate-500">Oct 2017 - Jul 2019</span>
+                                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Research & Teaching Assistant</h3>
+                                    <span class="text-sm font-mono text-slate-500 dark:text-slate-500">Oct 2017 - Jul 2019</span>
                                 </div>
-                                <div class="text-slate-700 font-medium mb-2">Vietnamese-German University (VGU)</div>
-                                <p class="text-sm text-slate-500">Electrical Engineering and Information Technology
+                                <div class="text-slate-700 dark:text-slate-300 font-medium mb-2">Vietnamese-German University (VGU)</div>
+                                <p class="text-sm text-slate-500 dark:text-slate-500">Electrical Engineering and Information Technology
                                     department.</p>
                             </div>
                         </div>
@@ -364,68 +589,69 @@
                 <!-- Highlights Grid -->
                 <section>
                     <div class="flex items-end justify-between mb-8">
-                        <h2 class="text-2xl font-serif font-bold text-slate-900">Recent Highlights</h2>
-                        <div class="h-px flex-1 bg-slate-200 ml-6 mb-2"></div>
+                        <h2 class="text-2xl font-serif font-bold text-slate-900 dark:text-white">Recent Highlights</h2>
+                        <div class="h-px flex-1 bg-slate-200 dark:bg-slate-800 ml-6 mb-2"></div>
                     </div>
 
                     <div class="grid gap-6 sm:grid-cols-2">
                         <!-- Highlight 1 -->
                         <a href="https://www.nature.com/articles/s41598-025-85127-7" target="_blank"
-                            class="block bg-gradient-to-br from-white to-slate-50 p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 group">
+                            class="block bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md dark:hover:shadow-slate-900/50 transition-all duration-300 group">
                             <div class="flex justify-between items-start mb-4">
                                 <div
-                                    class="p-2 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    class="p-2 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
                                     <i data-lucide="newspaper" class="w-5 h-5"></i>
                                 </div>
                                 <span
-                                    class="text-xs font-bold text-slate-400 bg-white px-2 py-1 rounded border border-slate-100 shadow-sm">2025</span>
+                                    class="text-xs font-bold text-slate-400 dark:text-slate-500 bg-white dark:bg-slate-900 px-2 py-1 rounded border border-slate-100 dark:border-slate-700 shadow-sm">2025</span>
                             </div>
                             <h3
-                                class="font-serif font-bold text-lg text-slate-900 mb-2 group-hover:text-blue-700 transition-colors">
+                                class="font-serif font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
                                 Scientific Reports Publication</h3>
-                            <p class="text-sm text-slate-500 leading-relaxed">"Evaluating climate-related financial
-                                policies' impact on decarbonization with machine learning methods."</p>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">"Evaluating climate-related financial
+                                policies' impact on decarbonization with machine learning methods." · 28 citations</p>
                         </a>
 
                         <!-- Highlight 2 -->
-                        <a href="https://github.com/a11to1n3/LimeSoDa" target="_blank"
-                            class="block bg-gradient-to-br from-white to-slate-50 p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 group">
+                        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=CxMeTj4AAAAJ&citation_for_view=CxMeTj4AAAAJ:RHpTSmoSYBkC"
+                            target="_blank"
+                            class="block bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md dark:hover:shadow-slate-900/50 transition-all duration-300 group">
                             <div class="flex justify-between items-start mb-4">
                                 <div
-                                    class="p-2 bg-emerald-50 text-emerald-600 rounded-lg group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                                    <i data-lucide="database" class="w-5 h-5"></i>
+                                    class="p-2 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 rounded-lg group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                                    <i data-lucide="trending-up" class="w-5 h-5"></i>
                                 </div>
                                 <span
-                                    class="text-xs font-bold text-slate-400 bg-white px-2 py-1 rounded border border-slate-100 shadow-sm">2025</span>
+                                    class="text-xs font-bold text-slate-400 dark:text-slate-500 bg-white dark:bg-slate-900 px-2 py-1 rounded border border-slate-100 dark:border-slate-700 shadow-sm">2026</span>
                             </div>
                             <h3
-                                class="font-serif font-bold text-lg text-slate-900 mb-2 group-hover:text-emerald-700 transition-colors">
-                                LimeSoDa Dataset</h3>
-                            <p class="text-sm text-slate-500 leading-relaxed">Released a comprehensive benchmark dataset
-                                for testing machine learning regressors in digital soil mapping.</p>
+                                class="font-serif font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
+                                Accepted: Journal of Economic Dynamics and Control</h3>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">"When pandemics meet climate risk: An
+                                agent-based model of non-linear macroeconomic dynamics under compound stress."</p>
                         </a>
                     </div>
                 </section>
 
                 <!-- Publications List -->
-                <section>
+                <section id="publications" class="scroll-mt-24">
                     <div class="flex items-end justify-between mb-8">
-                        <h2 class="text-2xl font-serif font-bold text-slate-900">Selected Publications</h2>
+                        <h2 class="text-2xl font-serif font-bold text-slate-900 dark:text-white">Selected Publications</h2>
                         <a href="https://scholar.google.com/citations?view_op=list_works&hl=en&hl=en&user=CxMeTj4AAAAJ&sortby=pubdate"
                             target="_blank"
-                            class="text-sm text-blue-600 font-semibold hover:text-blue-800 transition-colors flex items-center gap-1 mb-1">
-                            View on Scholar <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            class="text-sm text-blue-600 dark:text-blue-400 font-semibold hover:text-blue-800 dark:hover:text-blue-300 transition-colors flex items-center gap-1 mb-1">
+                            View all on Scholar <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </a>
                     </div>
 
                     <div class="space-y-6">
                         <!-- Paper 1 -->
                         <a href="https://www.nature.com/articles/s41598-025-85127-7" target="_blank"
-                            class="block group relative bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-blue-100">
+                            class="block group relative bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-slate-900/50 hover:border-blue-100 dark:hover:border-blue-900">
                             <div class="flex flex-col sm:flex-row gap-6">
-                                <!-- Figure Placeholder -->
+                                <!-- Figure -->
                                 <div
-                                    class="w-full sm:w-48 h-32 shrink-0 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg border border-slate-200 flex items-center justify-center group-hover:border-blue-200 transition-colors overflow-hidden relative">
+                                    class="w-full sm:w-48 h-32 shrink-0 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center group-hover:border-blue-200 dark:group-hover:border-blue-800 transition-colors overflow-hidden relative">
                                     <img src="assets/images/paper-climate.webp"
                                         alt="Evaluating climate-related financial policies"
                                         class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
@@ -437,21 +663,24 @@
                                         class="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity text-blue-400 hidden sm:block">
                                         <i data-lucide="external-link" class="w-5 h-5"></i>
                                     </div>
-                                    <div class="flex flex-col sm:flex-row gap-2 mb-2">
+                                    <div class="flex flex-wrap items-center gap-2 mb-2">
                                         <span
-                                            class="inline-block px-2 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-600 w-fit mb-2 sm:mb-0">2025</span>
-                                        <span class="hidden sm:inline text-slate-300">•</span>
+                                            class="inline-block px-2 py-0.5 rounded text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 w-fit">2025</span>
+                                        <span class="text-slate-300 dark:text-slate-700">•</span>
                                         <span
-                                            class="text-xs font-semibold tracking-wide text-slate-500 uppercase">Scientific
+                                            class="text-xs font-semibold tracking-wide text-slate-500 dark:text-slate-400 uppercase">Scientific
                                             Reports</span>
+                                        <span class="text-slate-300 dark:text-slate-700">•</span>
+                                        <span
+                                            class="text-xs font-semibold tracking-wide text-blue-600 dark:text-blue-400">28 citations</span>
                                     </div>
                                     <h3
-                                        class="text-lg font-serif font-bold text-slate-900 mb-2 group-hover:text-blue-700 transition-colors">
+                                        class="text-lg font-serif font-bold text-slate-900 dark:text-white mb-2 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
                                         Evaluating climate-related financial policies' impact on decarbonization with
                                         machine learning methods
                                     </h3>
-                                    <p class="text-slate-600 text-sm mb-0">
-                                        P D'Orazio, <span class="font-bold text-slate-900 border-b-2 border-blue-100">AD
+                                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-0">
+                                        P D'Orazio, <span class="font-bold text-slate-900 dark:text-white border-b-2 border-blue-100 dark:border-blue-900">AD
                                             Pham</span>
                                     </p>
                                 </div>
@@ -459,12 +688,258 @@
                         </a>
 
                         <!-- Paper 2 -->
-                        <a href="https://limesoda.readthedocs.io/en/latest/" target="_blank"
-                            class="block group relative bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-blue-100">
+                        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=CxMeTj4AAAAJ&citation_for_view=CxMeTj4AAAAJ:8k81kl-MbHgC"
+                            target="_blank"
+                            class="block group relative bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-slate-900/50 hover:border-blue-100 dark:hover:border-blue-900">
                             <div class="flex flex-col sm:flex-row gap-6">
-                                <!-- Figure Placeholder -->
+                                <!-- Figure -->
                                 <div
-                                    class="w-full sm:w-48 h-32 shrink-0 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg border border-slate-200 flex items-center justify-center group-hover:border-blue-200 transition-colors overflow-hidden relative">
+                                    class="w-full sm:w-48 h-32 shrink-0 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center group-hover:border-blue-200 dark:group-hover:border-blue-800 transition-colors overflow-hidden relative">
+                                    <img src="assets/images/paper-alerttrap-jcce.png"
+                                        alt="AlertTrap system architecture"
+                                        class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                                </div>
+
+                                <div class="flex-1">
+                                    <div
+                                        class="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity text-blue-400 hidden sm:block">
+                                        <i data-lucide="external-link" class="w-5 h-5"></i>
+                                    </div>
+                                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                                        <span
+                                            class="inline-block px-2 py-0.5 rounded text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 w-fit">2024</span>
+                                        <span class="text-slate-300 dark:text-slate-700">•</span>
+                                        <span
+                                            class="text-xs font-semibold tracking-wide text-slate-500 dark:text-slate-400 uppercase">Journal
+                                            of Computational and Cognitive Engineering</span>
+                                        <span class="text-slate-300 dark:text-slate-700">•</span>
+                                        <span
+                                            class="text-xs font-semibold tracking-wide text-blue-600 dark:text-blue-400">21 citations</span>
+                                    </div>
+                                    <h3
+                                        class="text-lg font-serif font-bold text-slate-900 dark:text-white mb-2 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
+                                        AlertTrap: A study on object detection in remote insects trap monitoring
+                                        system using on-the-edge deep learning platform
+                                    </h3>
+                                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-0">
+                                        AD Le, <span class="font-bold text-slate-900 dark:text-white border-b-2 border-blue-100 dark:border-blue-900">DA
+                                            Pham</span>, DT Pham, HB Vo
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Paper 3 -->
+                        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=CxMeTj4AAAAJ&citation_for_view=CxMeTj4AAAAJ:9yKSN-GCB0IC"
+                            target="_blank"
+                            class="block group relative bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-slate-900/50 hover:border-blue-100 dark:hover:border-blue-900">
+                            <div class="flex flex-col sm:flex-row gap-6">
+                                <!-- Figure -->
+                                <div
+                                    class="w-full sm:w-48 h-32 shrink-0 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center group-hover:border-blue-200 dark:group-hover:border-blue-800 transition-colors overflow-hidden relative">
+                                    <img src="assets/images/paper-loadforecast.png"
+                                        alt="Load forecasting illustration"
+                                        class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                                </div>
+
+                                <div class="flex-1">
+                                    <div
+                                        class="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity text-blue-400 hidden sm:block">
+                                        <i data-lucide="external-link" class="w-5 h-5"></i>
+                                    </div>
+                                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                                        <span
+                                            class="inline-block px-2 py-0.5 rounded text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 w-fit">2020</span>
+                                        <span class="text-slate-300 dark:text-slate-700">•</span>
+                                        <span
+                                            class="text-xs font-semibold tracking-wide text-slate-500 dark:text-slate-400 uppercase">International
+                                            Journal of Green Energy</span>
+                                        <span class="text-slate-300 dark:text-slate-700">•</span>
+                                        <span
+                                            class="text-xs font-semibold tracking-wide text-blue-600 dark:text-blue-400">20 citations</span>
+                                    </div>
+                                    <h3
+                                        class="text-lg font-serif font-bold text-slate-900 dark:text-white mb-2 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
+                                        Accuracy improvement of various short-term load forecasting models by a novel
+                                        and unified statistical data-filtering method
+                                    </h3>
+                                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-0">
+                                        DM Bui, PD Le, MT Cao, TT Pham, <span class="font-bold text-slate-900 dark:text-white border-b-2 border-blue-100 dark:border-blue-900">DA
+                                            Pham</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Paper 4 -->
+                        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=CxMeTj4AAAAJ&citation_for_view=CxMeTj4AAAAJ:5nxA0vEk-isC"
+                            target="_blank"
+                            class="block group relative bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-slate-900/50 hover:border-blue-100 dark:hover:border-blue-900">
+                            <div class="flex flex-col sm:flex-row gap-6">
+                                <!-- Figure -->
+                                <div
+                                    class="w-full sm:w-48 h-32 shrink-0 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center group-hover:border-blue-200 dark:group-hover:border-blue-800 transition-colors overflow-hidden relative">
+                                    <img src="assets/images/paper-alerttrap-nics.png"
+                                        alt="Insect trap detection samples"
+                                        class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                                </div>
+
+                                <div class="flex-1">
+                                    <div
+                                        class="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity text-blue-400 hidden sm:block">
+                                        <i data-lucide="external-link" class="w-5 h-5"></i>
+                                    </div>
+                                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                                        <span
+                                            class="inline-block px-2 py-0.5 rounded text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 w-fit">2021</span>
+                                        <span class="text-slate-300 dark:text-slate-700">•</span>
+                                        <span class="text-xs font-semibold tracking-wide text-slate-500 dark:text-slate-400 uppercase">NICS
+                                            2021</span>
+                                        <span class="text-slate-300 dark:text-slate-700">•</span>
+                                        <span
+                                            class="text-xs font-semibold tracking-wide text-blue-600 dark:text-blue-400">16 citations</span>
+                                    </div>
+                                    <h3
+                                        class="text-lg font-serif font-bold text-slate-900 dark:text-white mb-2 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
+                                        AlertTrap: On Designing An Edge-Computing Remote Insect Monitoring System
+                                    </h3>
+                                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-0">
+                                        <span class="font-bold text-slate-900 dark:text-white border-b-2 border-blue-100 dark:border-blue-900">DA
+                                            Pham</span>, AD Le, DT Pham, HB Vo
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Paper 5 -->
+                        <a href="https://github.com/a11to1n3/tsem" target="_blank"
+                            class="block group relative bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-slate-900/50 hover:border-blue-100 dark:hover:border-blue-900">
+                            <div class="flex flex-col sm:flex-row gap-6">
+                                <!-- Figure -->
+                                <div
+                                    class="w-full sm:w-48 h-32 shrink-0 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center group-hover:border-blue-200 dark:group-hover:border-blue-800 transition-colors overflow-hidden relative">
+                                    <img src="assets/images/paper-tsem.png" alt="TSEM Time Series"
+                                        class="w-full h-full object-cover">
+                                </div>
+
+                                <div class="flex-1">
+                                    <div
+                                        class="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity text-blue-400 hidden sm:block">
+                                        <i data-lucide="external-link" class="w-5 h-5"></i>
+                                    </div>
+                                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                                        <span
+                                            class="inline-block px-2 py-0.5 rounded text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 w-fit">2023</span>
+                                        <span class="text-slate-300 dark:text-slate-700">•</span>
+                                        <span class="text-xs font-semibold tracking-wide text-slate-500 dark:text-slate-400 uppercase">FICC
+                                            Conference</span>
+                                        <span class="text-slate-300 dark:text-slate-700">•</span>
+                                        <span
+                                            class="text-xs font-semibold tracking-wide text-blue-600 dark:text-blue-400">15 citations</span>
+                                    </div>
+                                    <h3
+                                        class="text-lg font-serif font-bold text-slate-900 dark:text-white mb-2 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
+                                        TSEM: Temporally-Weighted Spatiotemporal Explainable Neural Network for
+                                        Multivariate Time Series
+                                    </h3>
+                                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-0">
+                                        <span class="font-bold text-slate-900 dark:text-white border-b-2 border-blue-100 dark:border-blue-900">AD
+                                            Pham</span>, A Kuestenmacher, PG Ploeger
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Paper 6 -->
+                        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=CxMeTj4AAAAJ&citation_for_view=CxMeTj4AAAAJ:2osOgNQ5qMEC"
+                            target="_blank"
+                            class="block group relative bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-slate-900/50 hover:border-blue-100 dark:hover:border-blue-900">
+                            <div class="flex flex-col sm:flex-row gap-6">
+                                <!-- Figure -->
+                                <div
+                                    class="w-full sm:w-48 h-32 shrink-0 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center group-hover:border-blue-200 dark:group-hover:border-blue-800 transition-colors overflow-hidden relative">
+                                    <img src="assets/images/paper-datafilter.png"
+                                        alt="Statistical data-filtering illustration"
+                                        class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                                </div>
+
+                                <div class="flex-1">
+                                    <div
+                                        class="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity text-blue-400 hidden sm:block">
+                                        <i data-lucide="external-link" class="w-5 h-5"></i>
+                                    </div>
+                                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                                        <span
+                                            class="inline-block px-2 py-0.5 rounded text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 w-fit">2020</span>
+                                        <span class="text-slate-300 dark:text-slate-700">•</span>
+                                        <span
+                                            class="text-xs font-semibold tracking-wide text-slate-500 dark:text-slate-400 uppercase">Journal
+                                            of Electrical Engineering & Technology</span>
+                                        <span class="text-slate-300 dark:text-slate-700">•</span>
+                                        <span
+                                            class="text-xs font-semibold tracking-wide text-blue-600 dark:text-blue-400">14 citations</span>
+                                    </div>
+                                    <h3
+                                        class="text-lg font-serif font-bold text-slate-900 dark:text-white mb-2 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
+                                        A statistical data-filtering method proposed for short-term load forecasting
+                                        models
+                                    </h3>
+                                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-0">
+                                        DM Bui, PD Le, TM Cao, H Nguyen, TT Pham, <span class="font-bold text-slate-900 dark:text-white border-b-2 border-blue-100 dark:border-blue-900">DA
+                                            Pham</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Paper 7 -->
+                        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=CxMeTj4AAAAJ&citation_for_view=CxMeTj4AAAAJ:3fE2CSJIrl8C"
+                            target="_blank"
+                            class="block group relative bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-slate-900/50 hover:border-blue-100 dark:hover:border-blue-900">
+                            <div class="flex flex-col sm:flex-row gap-6">
+                                <!-- Figure -->
+                                <div
+                                    class="w-full sm:w-48 h-32 shrink-0 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center group-hover:border-blue-200 dark:group-hover:border-blue-800 transition-colors overflow-hidden relative">
+                                    <img src="assets/images/paper-pm25.png"
+                                        alt="Vehicle tracking for PM2.5 prediction"
+                                        class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                                </div>
+
+                                <div class="flex-1">
+                                    <div
+                                        class="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity text-blue-400 hidden sm:block">
+                                        <i data-lucide="external-link" class="w-5 h-5"></i>
+                                    </div>
+                                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                                        <span
+                                            class="inline-block px-2 py-0.5 rounded text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 w-fit">2022</span>
+                                        <span class="text-slate-300 dark:text-slate-700">•</span>
+                                        <span class="text-xs font-semibold tracking-wide text-slate-500 dark:text-slate-400 uppercase">RIVF
+                                            2022</span>
+                                        <span class="text-slate-300 dark:text-slate-700">•</span>
+                                        <span
+                                            class="text-xs font-semibold tracking-wide text-blue-600 dark:text-blue-400">11 citations</span>
+                                    </div>
+                                    <h3
+                                        class="text-lg font-serif font-bold text-slate-900 dark:text-white mb-2 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
+                                        A PM2.5 concentration prediction framework with vehicle tracking system: From
+                                        cause to effect
+                                    </h3>
+                                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-0">
+                                        CD Le, HV Pham, <span class="font-bold text-slate-900 dark:text-white border-b-2 border-blue-100 dark:border-blue-900">DA
+                                            Pham</span>, AD Le, HB Vo
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Paper 8 -->
+                        <a href="https://limesoda.readthedocs.io/en/latest/" target="_blank"
+                            class="block group relative bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-slate-900/50 hover:border-blue-100 dark:hover:border-blue-900">
+                            <div class="flex flex-col sm:flex-row gap-6">
+                                <!-- Figure -->
+                                <div
+                                    class="w-full sm:w-48 h-32 shrink-0 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center group-hover:border-blue-200 dark:group-hover:border-blue-800 transition-colors overflow-hidden relative">
                                     <img src="assets/images/paper-limesoda.jpg" alt="LimeSoDa Dataset"
                                         class="w-full h-full object-cover">
                                 </div>
@@ -474,122 +949,93 @@
                                         class="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity text-blue-400 hidden sm:block">
                                         <i data-lucide="external-link" class="w-5 h-5"></i>
                                     </div>
-                                    <div class="flex flex-col sm:flex-row gap-2 mb-2">
+                                    <div class="flex flex-wrap items-center gap-2 mb-2">
                                         <span
-                                            class="inline-block px-2 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-600 w-fit mb-2 sm:mb-0">2025</span>
-                                        <span class="hidden sm:inline text-slate-300">•</span>
+                                            class="inline-block px-2 py-0.5 rounded text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 w-fit">2025</span>
+                                        <span class="text-slate-300 dark:text-slate-700">•</span>
                                         <span
-                                            class="text-xs font-semibold tracking-wide text-slate-500 uppercase">Geoderma</span>
+                                            class="text-xs font-semibold tracking-wide text-slate-500 dark:text-slate-400 uppercase">Geoderma</span>
+                                        <span class="text-slate-300 dark:text-slate-700">•</span>
+                                        <span
+                                            class="text-xs font-semibold tracking-wide text-blue-600 dark:text-blue-400">9 citations</span>
                                     </div>
                                     <h3
-                                        class="text-lg font-serif font-bold text-slate-900 mb-2 group-hover:text-blue-700 transition-colors">
+                                        class="text-lg font-serif font-bold text-slate-900 dark:text-white mb-2 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
                                         LimeSoDa: A dataset collection for benchmarking of machine learning regressors
                                         in digital soil mapping
                                     </h3>
-                                    <p class="text-slate-600 text-sm">
+                                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-0">
                                         J Schmidinger, S Vogel, V Barkov, <span
-                                            class="font-bold text-slate-900 border-b-2 border-blue-100">AD Pham</span>,
+                                            class="font-bold text-slate-900 dark:text-white border-b-2 border-blue-100 dark:border-blue-900">AD Pham</span>,
                                         R Gebbers, et al.
                                     </p>
                                 </div>
                             </div>
                         </a>
 
-                        <!-- Paper 3 -->
-                        <a href="https://ieeexplore.ieee.org/abstract/document/10634677" target="_blank"
-                            class="block group relative bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-blue-100">
-                            <div class="flex flex-col sm:flex-row gap-6">
-                                <!-- Figure Placeholder -->
-                                <div
-                                    class="w-full sm:w-48 h-32 shrink-0 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg border border-slate-200 flex items-center justify-center group-hover:border-blue-200 transition-colors overflow-hidden relative">
-                                    <img src="assets/images/paper-vision.png" alt="Tree Counting Vision"
-                                        class="w-full h-full object-cover">
-                                </div>
+                    </div>
+                </section>
 
-                                <div class="flex-1">
-                                    <div class="flex flex-col sm:flex-row gap-2 mb-2">
-                                        <span
-                                            class="inline-block px-2 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-600 w-fit mb-2 sm:mb-0">2024</span>
-                                        <span class="hidden sm:inline text-slate-300">•</span>
-                                        <span class="text-xs font-semibold tracking-wide text-slate-500 uppercase">ICCE
-                                            2024</span>
-                                    </div>
-                                    <h3
-                                        class="text-lg font-serif font-bold text-slate-900 mb-2 group-hover:text-blue-700 transition-colors">
-                                        Expanding Vision in Tree Counting: Novel Ground Truth Generation and Deep
-                                        Learning Model
-                                    </h3>
-                                    <p class="text-slate-600 text-sm">
-                                        MN Ton-That, TV Le, NH Truong, AD Le, <span
-                                            class="font-bold text-slate-900 border-b-2 border-blue-100">AD Pham</span>,
-                                        HB Vo
-                                    </p>
+                <!-- Blog & Tutorials -->
+                <section id="blog" class="scroll-mt-24">
+                    <div class="flex items-end justify-between mb-8">
+                        <h2 class="text-2xl font-serif font-bold text-slate-900 dark:text-white">Blog & Tutorials</h2>
+                        <div class="h-px flex-1 bg-slate-200 dark:bg-slate-800 ml-6 mb-2"></div>
+                    </div>
+
+                    <!--
+                        HOW TO ADD A BLOG POST:
+                        1. Copy blog/welcome.html to blog/your-post-slug.html and edit the
+                           title, date, and article body.
+                        2. Copy one of the <a> cards below, put it FIRST in the grid, and
+                           update the href, tag (Tutorial / Blog / Note), date, title, and teaser.
+                    -->
+                    <div class="grid gap-6 sm:grid-cols-2">
+                        <a href="blog/amber-star-cluster.html"
+                            class="block bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md dark:hover:shadow-slate-900/50 transition-all duration-300 group overflow-hidden">
+                            <div
+                                class="h-36 overflow-hidden border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
+                                <img src="assets/images/blog-amber-snapshots.png"
+                                    alt="Star cluster collapse snapshots"
+                                    class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                            </div>
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-4">
+                                    <span
+                                        class="px-2 py-1 text-xs font-bold uppercase tracking-wide bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 rounded">Tutorial</span>
+                                    <span class="text-xs font-mono text-slate-400 dark:text-slate-500">Jul 2026</span>
                                 </div>
+                                <h3
+                                    class="font-serif font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
+                                    Simulating a collapsing star cluster with AMBER</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-4">An N-body
+                                    astrophysics model — cold collapse and violent relaxation — built in AMBER, Mesa,
+                                    and AgentPy: identical physics, ~20× faster in AMBER.</p>
+                                <span
+                                    class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 dark:text-blue-400">
+                                    Read tutorial <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                                </span>
                             </div>
                         </a>
 
-                        <!-- Paper 4 -->
-                        <a href="https://github.com/a11to1n3/tsem" target="_blank"
-                            class="block group relative bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-blue-100">
-                            <div class="flex flex-col sm:flex-row gap-6">
-                                <!-- Figure Placeholder -->
-                                <div
-                                    class="w-full sm:w-48 h-32 shrink-0 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg border border-slate-200 flex items-center justify-center group-hover:border-blue-200 transition-colors overflow-hidden relative">
-                                    <img src="assets/images/paper-tsem.png" alt="TSEM Time Series"
-                                        class="w-full h-full object-cover">
-                                </div>
-
-                                <div class="flex-1">
-                                    <div class="flex flex-col sm:flex-row gap-2 mb-2">
-                                        <span
-                                            class="inline-block px-2 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-600 w-fit mb-2 sm:mb-0">2023</span>
-                                        <span class="hidden sm:inline text-slate-300">•</span>
-                                        <span class="text-xs font-semibold tracking-wide text-slate-500 uppercase">FICC
-                                            Conference</span>
-                                    </div>
-                                    <h3
-                                        class="text-lg font-serif font-bold text-slate-900 mb-2 group-hover:text-blue-700 transition-colors">
-                                        TSEM: Temporally-Weighted Spatiotemporal Explainable Neural Network for
-                                        Multivariate Time Series
-                                    </h3>
-                                    <p class="text-slate-600 text-sm">
-                                        <span class="font-bold text-slate-900 border-b-2 border-blue-100">AD
-                                            Pham</span>, A Kuestenmacher, PG Ploeger
-                                    </p>
-                                </div>
+                        <a href="blog/welcome.html"
+                            class="block bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md dark:hover:shadow-slate-900/50 transition-all duration-300 group">
+                            <div class="flex justify-between items-start mb-4">
+                                <span
+                                    class="px-2 py-1 text-xs font-bold uppercase tracking-wide bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 rounded">Blog</span>
+                                <span
+                                    class="text-xs font-mono text-slate-400 dark:text-slate-500">Jul 2026</span>
                             </div>
-                        </a>
-
-                        <!-- Paper 5 -->
-                        <a href="https://escholarship.org/content/qt7331p41b/qt7331p41b.pdf" target="_blank"
-                            class="block group relative bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-blue-100">
-                            <div class="flex flex-col sm:flex-row gap-6">
-                                <!-- Figure Placeholder -->
-                                <div
-                                    class="w-full sm:w-48 h-32 shrink-0 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg border border-slate-200 flex items-center justify-center group-hover:border-blue-200 transition-colors overflow-hidden relative">
-                                    <img src="assets/images/paper-smarttrap.png" alt="SmartTrap IoT"
-                                        class="w-full h-full object-cover">
-                                </div>
-
-                                <div class="flex-1">
-                                    <div class="flex flex-col sm:flex-row gap-2 mb-2">
-                                        <span
-                                            class="inline-block px-2 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-600 w-fit mb-2 sm:mb-0">2023</span>
-                                        <span class="hidden sm:inline text-slate-300">•</span>
-                                        <span class="text-xs font-semibold tracking-wide text-slate-500 uppercase">IEEE
-                                            RIVF</span>
-                                    </div>
-                                    <h3
-                                        class="text-lg font-serif font-bold text-slate-900 mb-2 group-hover:text-blue-700 transition-colors">
-                                        SmartTrap: An On-Field Insect Monitoring System Empowered by Edge Computing
-                                        Capabilities
-                                    </h3>
-                                    <p class="text-slate-600 text-sm">
-                                        QM Nguyen, <span class="font-bold text-slate-900 border-b-2 border-blue-100">DA
-                                            Pham</span>, DT Pham, AD Le, NQH Vo, HB Vo
-                                    </p>
-                                </div>
-                            </div>
+                            <h3
+                                class="font-serif font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
+                                Welcome to my research blog</h3>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-4">What to expect
+                                here: tutorials on graph-based forecasting, agent-based modelling, and explainable AI —
+                                plus notes from the PhD trenches.</p>
+                            <span
+                                class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 dark:text-blue-400">
+                                Read post <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </span>
                         </a>
 
                     </div>
@@ -599,14 +1045,25 @@
         </div>
 
         <!-- Footer -->
-        <footer class="mt-20 pt-8 border-t border-slate-200 text-center">
-            <p class="text-sm text-slate-400 font-medium">&copy; 2025 Anh-Duy Pham. Built with academic rigor.</p>
+        <footer class="mt-20 pt-8 border-t border-slate-200 dark:border-slate-800 text-center">
+            <p class="text-sm text-slate-400 dark:text-slate-600 font-medium">&copy; <span id="year"></span> Anh-Duy
+                Pham. Built with academic rigor.</p>
         </footer>
     </div>
 
     <script>
         // Initialize Lucide Icons
         lucide.createIcons();
+
+        // Footer year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Dark mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.theme = isDark ? 'dark' : 'light';
+        });
     </script>
 </body>
 
