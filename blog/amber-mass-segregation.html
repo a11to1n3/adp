@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heavy stars sink. Light stars leave. | Anh-Duy Pham</title>
+    <meta name="description"
+        content="Watching mass segregation grow in a quiet star cluster with AMBER — slower than collapse, stranger in a good way.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f8fafc;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(219, 234, 254, 0.3) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(224, 231, 255, 0.3) 0px, transparent 50%);
+            background-attachment: fixed;
+            transition: background-color 0.3s ease;
+        }
+
+        .dark body {
+            background-color: #020617;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.25) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(49, 46, 129, 0.25) 0px, transparent 50%);
+        }
+
+        .article-body p {
+            margin-bottom: 1.25rem;
+            line-height: 1.9;
+        }
+
+        .article-body h2 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin: 2.5rem 0 1rem 0;
+        }
+
+        .article-body h3 {
+            font-weight: 600;
+            font-size: 1.125rem;
+            margin: 2rem 0 0.75rem 0;
+        }
+
+        .article-body ul {
+            list-style: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .article-body li {
+            margin-bottom: 0.5rem;
+            line-height: 1.8;
+        }
+
+        .article-body code {
+            font-size: 0.875em;
+            background: #e2e8f0;
+            padding: 0.15em 0.4em;
+            border-radius: 0.25rem;
+        }
+
+        .dark .article-body code {
+            background: #1e293b;
+        }
+
+        .article-body pre {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 1rem 1.25rem;
+            border-radius: 0.75rem;
+            overflow-x: auto;
+            margin-bottom: 1.25rem;
+            font-size: 0.8125rem;
+            line-height: 1.65;
+        }
+
+        .article-body pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .article-body figure {
+            margin: 2rem 0;
+        }
+
+        .article-body figure img {
+            max-width: 100%;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .dark .article-body figure img {
+            border-color: #334155;
+        }
+
+        .article-body figcaption {
+            font-size: 0.8125rem;
+            color: #94a3b8;
+            margin-top: 0.5rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .article-body table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .article-body th,
+        .article-body td {
+            padding: 0.6rem 0.9rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .dark .article-body th,
+        .dark .article-body td {
+            border-color: #334155;
+        }
+
+        .article-body th {
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body
+    class="text-slate-600 dark:text-slate-400 font-sans antialiased selection:bg-blue-100 selection:text-blue-900 dark:selection:bg-blue-900 dark:selection:text-blue-100">
+
+    <nav
+        class="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-slate-950/70 border-b border-slate-200/60 dark:border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="../index.html" class="font-serif font-bold text-lg text-slate-900 dark:text-white tracking-tight">Anh-Duy
+                Pham</a>
+            <div class="flex items-center gap-1 sm:gap-2">
+                <a href="../index.html"
+                    class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</a>
+                <a href="../index.html#blog"
+                    class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-blue-600 dark:text-blue-400">Blog</a>
+                <a href="../index.html#publications"
+                    class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Publications</a>
+                <button id="theme-toggle" aria-label="Toggle dark mode"
+                    class="ml-1 p-2.5 rounded-full border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 hover:border-blue-300 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
+                    <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+
+        <header class="mb-10">
+            <a href="../index.html#blog"
+                class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors mb-6">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> All posts
+            </a>
+            <div class="flex items-center gap-3 mb-4">
+                <span
+                    class="px-2 py-1 text-xs font-bold uppercase tracking-wide bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 rounded">Tutorial</span>
+                <span class="text-xs font-mono text-slate-400 dark:text-slate-500">July 2026</span>
+            </div>
+            <h1 class="text-4xl sm:text-5xl font-serif font-bold text-slate-900 dark:text-white tracking-tight leading-tight">
+                Heavy stars sink. Light stars leave.</h1>
+            <p class="mt-4 text-xl text-slate-500 dark:text-slate-400 font-serif italic leading-relaxed">
+                Watching mass segregation grow in a quiet star cluster — and why that story needs more patience than a collapse.
+            </p>
+        </header>
+
+        <div class="article-body text-lg text-slate-600 dark:text-slate-400">
+            <p>
+                Last time I
+                <a href="amber-star-cluster.html"
+                    class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">dropped a cold star cluster
+                    and let gravity do the dramatic thing</a>. Everything happens in a hurry: free fall, bounce,
+                halo. You can almost watch it with your eyes closed.
+            </p>
+            <p>
+                Real clusters are rarely that theatrical. Most of the time they sit near equilibrium — not
+                collapsing, not exploding — and still, slowly, rearrange. The heavy stars drift toward the center.
+                The light ones get kicked outward. After a while the core is a different place than the outskirts.
+                Astrophysicists call it <strong class="text-slate-800 dark:text-slate-200">mass segregation</strong>.
+                It is quieter than violent relaxation, and in some ways more interesting, because nothing obvious is
+                “wrong” with the cluster at the start. It just keeps having conversations, two stars at a time.
+            </p>
+            <p>
+                So I built that story in
+                <a href="https://github.com/a11to1n3/AMBER" target="_blank"
+                    class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">AMBER</a>: five hundred
+                stars, a fifth of them five times heavier than the rest, already in balance, and then… wait.
+            </p>
+
+            <h2 class="text-slate-900 dark:text-white">A calm beginning</h2>
+            <p>
+                Cold collapse is a punch. Mass segregation is a simmer.
+            </p>
+            <p>
+                I start from a Plummer sphere — the classic round, centrally concentrated cloud that textbooks love —
+                and give everyone enough random motion that the cluster is already near virial equilibrium. The
+                virial ratio Q = 2T/|W| sits around one from the first step. There is no free-fall cliff to fall off.
+                If something changes, it has to come from the long chain of weak two-body scatterings we call
+                <em>relaxation</em>, not from the whole ball of stars deciding to fall in at once.
+            </p>
+            <p>
+                The cast is small enough for a laptop: 500 stars, 100 of them “heavy” with mass ratio five. Softened
+                gravity, fixed leapfrog step — same rough tools as the collapse post, just a longer afternoon. The
+                full initial-condition and force helpers live at the
+                <a href="#recipes" class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">bottom of
+                    the page</a> if you want to re-run it; the story does not need them in the middle.
+            </p>
+
+            <h2 class="text-slate-900 dark:text-white">Stars as a table, not a crowd of objects</h2>
+            <p>
+                The gravity step is still the same kick–drift–kick leapfrog as before. What changes is the cast
+                list: each star now carries a mass and a simple flag for “heavy or light.” In AMBER that is just
+                another pair of columns on the population table. When I want the heavy half-mass radius, I do not
+                loop through Python objects looking for a label — I ask for a view:
+            </p>
+            <pre><code>heavy = self.agents.where(self.agents.heavy == 1)
+light = self.agents.where(self.agents.heavy == 0)</code></pre>
+            <p>
+                That is the small thing I actually like about putting this in an ABM framework. The physics is
+                NumPy either way. The story-keeping — who is heavy, who is light, what their sizes are doing —
+                stays attached to the same table the integrator is writing into. No parallel index arrays drifting
+                out of sync at 2 a.m.
+            </p>
+            <p>
+                The full model is short enough to paste. Setup plants the Plummer sphere; each step advances
+                everyone together; every so often we measure how far the two groups have wandered from each other.
+            </p>
+            <pre><code>class MultiMassCluster(am.Model):
+    def setup(self):
+        x, y, z, vx, vy, vz, m, heavy = plummer_ic()
+        self.add_agents(N, x=x, y=y, z=z, vx=vx, vy=vy, vz=vz,
+                        m=m, heavy=heavy)
+
+    def step(self):
+        x, y, z, vx, vy, vz, m = self.agents.numpy(
+            'x', 'y', 'z', 'vx', 'vy', 'vz', 'm')
+        ax, ay, az = accelerations(x, y, z, m)
+        vx = vx + 0.5*DT*ax; vy = vy + 0.5*DT*ay; vz = vz + 0.5*DT*az
+        x = x + DT*vx;       y = y + DT*vy;       z = z + DT*vz
+        ax, ay, az = accelerations(x, y, z, m)
+        vx = vx + 0.5*DT*ax; vy = vy + 0.5*DT*ay; vz = vz + 0.5*DT*az
+        self.agents.set(x=x, y=y, z=z, vx=vx, vy=vy, vz=vz)
+        # … record half-mass radii for heavy / light via agents.where(…)
+
+results = MultiMassCluster({'steps': 4000, 'seed': 11}).run()</code></pre>
+            <p>
+                On my machine that full run is about half a minute. Long enough to make tea. Short enough that you
+                will actually re-run it when you change the mass ratio.
+            </p>
+
+            <h2 class="text-slate-900 dark:text-white">What the cluster decides to do</h2>
+            <p>
+                At the start, heavies and lights are sprinkled through the same Plummer cloud. Their half-mass
+                radii sit close together — a little scatter from the random draw, nothing systematic. Then the
+                quiet work begins. Hit play and watch the core remember who has weight.
+            </p>
+
+            <!-- Interactive animation: xy + half-mass radii from full AMBER run -->
+            <div id="seg-widget"
+                class="not-prose my-8 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 sm:p-6">
+                <div class="flex flex-wrap items-center gap-2 mb-4">
+                    <button id="seg-play"
+                        class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold transition-colors">▶
+                        Play</button>
+                    <button id="seg-restart"
+                        class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:border-amber-300 dark:hover:border-amber-600 transition-colors">↺
+                        Restart</button>
+                    <label class="ml-auto text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2">
+                        speed
+                        <select id="seg-speed"
+                            class="rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2 py-1 text-xs">
+                            <option value="0.5">0.5×</option>
+                            <option value="1" selected>1×</option>
+                            <option value="2">2×</option>
+                            <option value="4">4×</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <div class="text-sm font-bold text-slate-900 dark:text-white mb-1">x–y plane</div>
+                        <div class="text-[11px] text-slate-400 dark:text-slate-500 mb-2 flex items-center gap-3">
+                            <span class="inline-flex items-center gap-1"><span class="inline-block w-2 h-2 rounded-full bg-sky-400"></span> light</span>
+                            <span class="inline-flex items-center gap-1"><span class="inline-block w-2.5 h-2.5 rounded-full bg-amber-400"></span> heavy</span>
+                        </div>
+                        <canvas id="seg-xy" class="w-full rounded-lg block" style="background:#0f172a; aspect-ratio:1"></canvas>
+                    </div>
+                    <div>
+                        <div class="text-sm font-bold text-slate-900 dark:text-white mb-1">Half-mass radius</div>
+                        <div class="text-[11px] text-slate-400 dark:text-slate-500 mb-2">growing split over time</div>
+                        <canvas id="seg-rhalf" class="w-full rounded-lg block" style="background:#0f172a; aspect-ratio:1"></canvas>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <input id="seg-scrub" type="range" min="0" max="200" value="0" class="w-full accent-amber-500">
+                    <div class="flex justify-between mt-1 text-[11px] font-mono text-slate-400 dark:text-slate-500">
+                        <span id="seg-time">t = 0.0</span>
+                        <span id="seg-stats">r½ heavy 1.19 · light 1.32</span>
+                    </div>
+                </div>
+                <p class="mt-3 text-xs text-slate-400 dark:text-slate-500 leading-relaxed">
+                    Recorded from a full AMBER run (N = 500, mass ratio 5, 4000 leapfrog steps). Scrub or play —
+                    both panels share the same clock.
+                </p>
+            </div>
+
+            <p>
+                By the end the heavy stars have settled inward; the light population has puffed outward. The ratio
+                of those two half-mass radii is a bit over two. Nothing “broke.” The cluster simply sorted itself,
+                the way a restless room sorts itself when the loud people claim the center and everyone else edges
+                to the walls.
+            </p>
+
+            <figure>
+                <img src="../assets/images/blog-amber-lagrangian.png"
+                    alt="Lagrangian radii and virial ratio versus time from AMBER">
+                <figcaption>Still frame of the bookkeeping: the inner mass tightens a little while Q stays near 1 —
+                    not another collapse story.</figcaption>
+            </figure>
+
+            <h2 class="text-slate-900 dark:text-white">What I am not claiming</h2>
+            <p>
+                Softening blurs true close encounters, so this will not grow hard binaries the way NBODY6 or PETAR
+                would. Five hundred particles is a postcard of a globular cluster, not a census. Masses never
+                change — no winds, no supernovae, no black holes quietly taking over the center.
+            </p>
+            <p>
+                Still, the <em>shape</em> of the story is right: equipartition pushing mass inward on a relaxation
+                timescale, while the cluster as a whole stays roughly in balance. That is the step after violent
+                relaxation that makes collisional dynamics feel alive to me. The drama is not the fall. It is the
+                sorting.
+            </p>
+
+            <h2 class="text-slate-900 dark:text-white">Why bother with AMBER at all</h2>
+            <p>
+                You could write this as a pure NumPy script. Plenty of people do. I keep AMBER in the loop because
+                the experiment wants to grow: more mass ratios, a tidal field, a second clump on a collision
+                course. When the “agents” pick up labels, groups, and later maybe stellar types, I would rather
+                those live in one columnar model than in a pile of parallel arrays I have to remember to zip
+                together.
+            </p>
+            <p>
+                For production science on real dense clusters, use the tools built for that. For “can I feel mass
+                segregation on my laptop before lunch?” this is the level I want.
+            </p>
+
+            <h2 class="text-slate-900 dark:text-white">If you want to play</h2>
+            <p>
+                <code>pip install -U ambr</code>, grab the recipes below, run with seed 11, and plot the two
+                half-mass radii. Change the mass ratio. Make almost everyone light. Watch the split arrive later or
+                sooner. The figures on this page came from that same path on ambr 0.4.2.
+            </p>
+            <p>
+                Next time I might put the cluster on a galactic orbit and let the tides peel a tail — or smash two
+                Plummers together and see what survives. The
+                <a href="amber-star-cluster.html"
+                    class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">collapse post</a> was the
+                punch. This one was the simmer. There is more kitchen left.
+            </p>
+            <p>
+                Questions, corrections, or PhD-position leads:
+                <a href="mailto:duyanhpham@outlook.com"
+                    class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">email me</a>.
+            </p>
+
+            <h2 id="recipes" class="text-slate-900 dark:text-white scroll-mt-24">Recipes (for the curious)</h2>
+            <p class="text-base">
+                Plumbing only — Plummer initial conditions, softened unequal-mass gravity, and the usual size /
+                virial helpers. Wire them into the model class above and you have the full run.
+            </p>
+            <pre><code>import numpy as np
+import ambr as am
+
+N, N_HEAVY, MU = 500, 100, 5.0
+A, G, EPS2, DT, SEED = 1.0, 1.0, 0.05**2, 0.025, 11
+m_light = 1.0 / (N_HEAVY * MU + (N - N_HEAVY))
+m_heavy = MU * m_light
+
+def plummer_ic(seed=SEED):
+    rng = np.random.default_rng(seed)
+    heavy = np.zeros(N, dtype=bool)
+    heavy[rng.choice(N, N_HEAVY, replace=False)] = True
+    m = np.where(heavy, m_heavy, m_light).astype(np.float64)
+    u = np.maximum(rng.random(N), 1e-12)
+    r = np.clip(A / np.sqrt(u**(-2/3) - 1), 0, 15 * A)
+    costh, phi = rng.uniform(-1, 1, N), rng.uniform(0, 2*np.pi, N)
+    sinth = np.sqrt(1 - costh**2)
+    x, y, z = r*sinth*np.cos(phi), r*sinth*np.sin(phi), r*costh
+    vesc2 = 2 * G / np.sqrt(r**2 + A**2)
+    q = np.empty(N)
+    for i in range(N):
+        while True:
+            x1, x2 = rng.random(), rng.random()
+            if x2 &lt; x1**2 * (1 - x1**2)**3.5:
+                q[i] = x1
+                break
+    v = q * np.sqrt(vesc2)
+    costh, phi = rng.uniform(-1, 1, N), rng.uniform(0, 2*np.pi, N)
+    sinth = np.sqrt(1 - costh**2)
+    vx, vy, vz = v*sinth*np.cos(phi), v*sinth*np.sin(phi), v*costh
+    mtot = m.sum()
+    x -= np.sum(m*x)/mtot; y -= np.sum(m*y)/mtot; z -= np.sum(m*z)/mtot
+    vx -= np.sum(m*vx)/mtot; vy -= np.sum(m*vy)/mtot; vz -= np.sum(m*vz)/mtot
+    # rescale speeds so Q ≈ 1 (see half_mass_radius / virial_ratio helpers)
+    return x, y, z, vx, vy, vz, m, heavy.astype(np.int8)
+
+def accelerations(x, y, z, m):
+    dx = x[None,:] - x[:,None]
+    dy = y[None,:] - y[:,None]
+    dz = z[None,:] - z[:,None]
+    inv_r3 = (dx*dx + dy*dy + dz*dz + EPS2) ** -1.5
+    np.fill_diagonal(inv_r3, 0.0)
+    return (G*np.sum(m[None,:]*dx*inv_r3, 1),
+            G*np.sum(m[None,:]*dy*inv_r3, 1),
+            G*np.sum(m[None,:]*dz*inv_r3, 1))</code></pre>
+        </div>
+
+        <footer class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between">
+                <p class="text-sm text-slate-400 dark:text-slate-600 font-medium">&copy; <span id="year"></span>
+                    Anh-Duy Pham</p>
+                <a href="../index.html#blog"
+                    class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to all posts
+                </a>
+            </div>
+        </footer>
+    </article>
+
+    <script>
+        lucide.createIcons();
+        document.getElementById('year').textContent = new Date().getFullYear();
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.theme = isDark ? 'dark' : 'light';
+        });
+    </script>
+
+    <script src="../assets/data/mass-segregation-anim.js"></script>
+    <script>
+        (function () {
+            const D = window.MASS_SEG;
+            if (!D) return;
+
+            const F = D.frameCount;
+            const N = D.n;
+            const RANGE = D.range || 5;
+            const FPS = 24; // frames of animation per second at 1×
+
+            function decode(b64) {
+                const bin = atob(b64);
+                const bytes = new Uint8Array(bin.length);
+                for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+                return new Int16Array(bytes.buffer);
+            }
+            const pos = decode(D.b64); // F * N * 2 int16 (x,y)
+            const heavy = D.heavy;     // length N, 0/1
+            const series = D.series;
+
+            const xy = document.getElementById('seg-xy');
+            const rh = document.getElementById('seg-rhalf');
+            const scrub = document.getElementById('seg-scrub');
+            const playBtn = document.getElementById('seg-play');
+            const restartBtn = document.getElementById('seg-restart');
+            const speedSel = document.getElementById('seg-speed');
+            const timeEl = document.getElementById('seg-time');
+            const statsEl = document.getElementById('seg-stats');
+            const ctxXY = xy.getContext('2d');
+            const ctxRH = rh.getContext('2d');
+
+            scrub.max = String(F - 1);
+
+            function sizeCanvas(c) {
+                const dpr = window.devicePixelRatio || 1;
+                const w = c.clientWidth || 320;
+                c.width = w * dpr;
+                c.height = w * dpr;
+                return w * dpr;
+            }
+
+            let pxXY = 0, pxRH = 0;
+            function resize() {
+                pxXY = sizeCanvas(xy);
+                pxRH = sizeCanvas(rh);
+                draw(frame);
+            }
+
+            function drawXY(idx) {
+                const ctx = ctxXY, px = pxXY;
+                ctx.clearRect(0, 0, px, px);
+                const s = px / (2 * RANGE);
+                const base = idx * N * 2;
+                // lights first (under)
+                ctx.fillStyle = 'rgba(56,189,248,0.55)';
+                for (let i = 0; i < N; i++) {
+                    if (heavy[i]) continue;
+                    const x = pos[base + 2 * i] / D.scale;
+                    const y = pos[base + 2 * i + 1] / D.scale;
+                    if (x < -RANGE || x > RANGE || y < -RANGE || y > RANGE) continue;
+                    const r = Math.max(1.5, px * 0.004);
+                    ctx.beginPath();
+                    ctx.arc((x + RANGE) * s, (RANGE - y) * s, r, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                // heavies on top
+                ctx.fillStyle = 'rgba(251,191,36,0.92)';
+                for (let i = 0; i < N; i++) {
+                    if (!heavy[i]) continue;
+                    const x = pos[base + 2 * i] / D.scale;
+                    const y = pos[base + 2 * i + 1] / D.scale;
+                    if (x < -RANGE || x > RANGE || y < -RANGE || y > RANGE) continue;
+                    const r = Math.max(2.2, px * 0.006);
+                    ctx.beginPath();
+                    ctx.arc((x + RANGE) * s, (RANGE - y) * s, r, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            function drawRhalf(idx) {
+                const ctx = ctxRH, px = pxRH;
+                ctx.clearRect(0, 0, px, px);
+                const padL = px * 0.12, padR = px * 0.06, padT = px * 0.08, padB = px * 0.14;
+                const w = px - padL - padR, h = px - padT - padB;
+                const tMax = series[series.length - 1].t;
+                let rMin = 0.7, rMax = 2.4;
+                const xOf = (t) => padL + (t / tMax) * w;
+                const yOf = (r) => padT + (1 - (r - rMin) / (rMax - rMin)) * h;
+
+                // grid
+                ctx.strokeStyle = 'rgba(148,163,184,0.15)';
+                ctx.lineWidth = 1;
+                for (let g = 0; g <= 4; g++) {
+                    const yy = padT + (g / 4) * h;
+                    ctx.beginPath(); ctx.moveTo(padL, yy); ctx.lineTo(padL + w, yy); ctx.stroke();
+                }
+
+                function strokeSeries(key, color, upTo) {
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = Math.max(2, px * 0.006);
+                    ctx.beginPath();
+                    for (let i = 0; i <= upTo; i++) {
+                        const p = series[i];
+                        const X = xOf(p.t), Y = yOf(p[key]);
+                        if (i === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y);
+                    }
+                    ctx.stroke();
+                }
+                strokeSeries('rh_a', 'rgba(148,163,184,0.7)', idx);
+                strokeSeries('rh_l', 'rgba(56,189,248,0.95)', idx);
+                strokeSeries('rh_h', 'rgba(251,191,36,0.95)', idx);
+
+                // playhead
+                const tNow = series[idx].t;
+                ctx.strokeStyle = 'rgba(248,250,252,0.35)';
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.moveTo(xOf(tNow), padT);
+                ctx.lineTo(xOf(tNow), padT + h);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // dots at tip
+                [['rh_h', '#fbbf24'], ['rh_l', '#38bdf8']].forEach(([k, c]) => {
+                    ctx.fillStyle = c;
+                    ctx.beginPath();
+                    ctx.arc(xOf(tNow), yOf(series[idx][k]), Math.max(3, px * 0.01), 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                // labels
+                ctx.fillStyle = 'rgba(148,163,184,0.9)';
+                ctx.font = `${Math.max(10, px * 0.035)}px ui-monospace, monospace`;
+                ctx.fillText('0', padL, padT + h + px * 0.06);
+                ctx.fillText(String(Math.round(tMax)), padL + w - px * 0.04, padT + h + px * 0.06);
+                ctx.fillText('t', padL + w * 0.48, padT + h + px * 0.1);
+            }
+
+            function draw(idx) {
+                idx = Math.max(0, Math.min(F - 1, idx | 0));
+                drawXY(idx);
+                drawRhalf(idx);
+                const s = series[idx];
+                timeEl.textContent = 't = ' + s.t.toFixed(1);
+                statsEl.textContent =
+                    'r½ heavy ' + s.rh_h.toFixed(2) + ' · light ' + s.rh_l.toFixed(2);
+                scrub.value = String(idx);
+            }
+
+            let frame = 0;
+            let playing = false;
+            let last = null;
+            let raf = null;
+            let accum = 0;
+
+            function tick(ts) {
+                if (!playing) return;
+                if (last == null) last = ts;
+                const dt = (ts - last) / 1000;
+                last = ts;
+                const speed = parseFloat(speedSel.value) || 1;
+                accum += dt * speed * FPS;
+                while (accum >= 1) {
+                    accum -= 1;
+                    frame++;
+                    if (frame >= F) {
+                        frame = F - 1;
+                        playing = false;
+                        playBtn.textContent = '▶ Play';
+                        break;
+                    }
+                }
+                draw(frame);
+                if (playing) raf = requestAnimationFrame(tick);
+            }
+
+            function play() {
+                if (frame >= F - 1) frame = 0;
+                playing = true;
+                playBtn.textContent = '❚❚ Pause';
+                last = null;
+                raf = requestAnimationFrame(tick);
+            }
+            function pause() {
+                playing = false;
+                playBtn.textContent = '▶ Play';
+                if (raf) cancelAnimationFrame(raf);
+            }
+
+            playBtn.addEventListener('click', () => playing ? pause() : play());
+            restartBtn.addEventListener('click', () => {
+                pause();
+                frame = 0;
+                accum = 0;
+                draw(0);
+            });
+            scrub.addEventListener('input', () => {
+                pause();
+                frame = parseInt(scrub.value, 10) || 0;
+                draw(frame);
+            });
+            window.addEventListener('resize', resize);
+            resize();
+            // autoplay once in view
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach((e) => {
+                    if (e.isIntersecting && !playing && frame === 0) play();
+                });
+            }, { threshold: 0.4 });
+            io.observe(document.getElementById('seg-widget'));
+        })();
+    </script>
+</body>
+
+</html>

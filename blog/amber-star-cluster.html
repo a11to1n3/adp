@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulating a collapsing star cluster with AMBER | Anh-Duy Pham</title>
+    <title>Drop a cold star cluster. Watch it find its feet. | Anh-Duy Pham</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -200,48 +200,44 @@
                 <span class="text-xs font-mono text-slate-400 dark:text-slate-500">July 2026</span>
             </div>
             <h1 class="text-4xl sm:text-5xl font-serif font-bold text-slate-900 dark:text-white tracking-tight leading-tight">
-                Simulating a collapsing star cluster with AMBER — vs Mesa and AgentPy</h1>
+                Drop a cold star cluster. Watch it find its feet.</h1>
+            <p class="mt-4 text-xl text-slate-500 dark:text-slate-400 font-serif italic leading-relaxed">
+                Violent relaxation as a stress test for AMBER — and a race against Mesa and AgentPy.
+            </p>
         </header>
 
         <div class="article-body text-lg text-slate-600 dark:text-slate-400">
             <p>
+                I built
                 <a href="https://github.com/a11to1n3/AMBER" target="_blank"
-                    class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">AMBER</a> is my agent-based
-                modelling framework that stores the whole agent population in a
+                    class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">AMBER</a> so agent models
+                could grow without dying in a pure-Python loop — the whole population lives in a
                 <a href="https://pola.rs/" target="_blank"
-                    class="text-blue-600 dark:text-blue-400 hover:underline">Polars</a>-backed columnar table instead of
-                one Python object per agent (<a href="https://arxiv.org/abs/2601.16292" target="_blank"
-                    class="text-blue-600 dark:text-blue-400 hover:underline">paper</a>). In this tutorial we'll use it
-                to simulate a real astrophysical phenomenon — the <strong
-                    class="text-slate-800 dark:text-slate-200">cold collapse and violent relaxation of a
-                    self-gravitating star cluster</strong> — and build the identical model in
-                <a href="https://mesa.readthedocs.io/" target="_blank"
-                    class="text-blue-600 dark:text-blue-400 hover:underline">Mesa</a> and
-                <a href="https://agentpy.readthedocs.io/" target="_blank"
-                    class="text-blue-600 dark:text-blue-400 hover:underline">AgentPy</a> to compare both the code style
-                and the runtime.
+                    class="text-blue-600 dark:text-blue-400 hover:underline">Polars</a> table
+                (<a href="https://arxiv.org/abs/2601.16292" target="_blank"
+                    class="text-blue-600 dark:text-blue-400 hover:underline">paper</a>). The question is always: does
+                that still feel like modelling when the rules get nasty?
             </p>
             <p>
-                Gravity is a deliberately nasty choice for an agent-based framework: every star interacts with
-                <em>every other star</em>, all the time. There is no locality to exploit, so an object-per-agent
-                design has to do the O(N²) pair loop in pure Python. A columnar design can hand the same loop to
-                NumPy as one broadcast expression. That contrast is the whole point of this post.
+                Gravity is a good nasty. Every star pulls on every other star, all the time. There is no neat
+                neighbourhood graph to hide behind. If your framework thinks in objects, you pay for that N² loop in
+                the interpreter. If it thinks in columns, you hand the same loop to NumPy and go make coffee. So I
+                built the same cold-collapse cluster three times — AMBER, Mesa, AgentPy — same physics, same seed,
+                and let them race.
             </p>
 
-            <h2 class="text-slate-900 dark:text-white">The phenomenon: violent relaxation</h2>
+            <h2 class="text-slate-900 dark:text-white">The collapse, in plain language</h2>
             <p>
-                Take N stars, place them uniformly in a sphere, and give them almost no initial velocity — a
-                <em>cold</em> start. The cluster has nothing to support it against its own gravity, so it collapses.
-                Stars fall inward, overshoot, and slosh through each other; the rapidly fluctuating gravitational
-                field redistributes their energies (Lynden-Bell's <em>violent relaxation</em>), ejects a few stars
-                into a diffuse halo, and leaves the rest ringing around <strong
-                    class="text-slate-800 dark:text-slate-200">virial equilibrium</strong>.
+                Sprinkle a few hundred stars in a ball and give them almost no speed. With nothing to hold them up,
+                they fall in. They overshoot, slosh through the middle, fling a few friends into a faint halo, and
+                eventually settle into a compact core that is roughly in balance — what physicists call
+                <strong class="text-slate-800 dark:text-slate-200">virial equilibrium</strong>. The messy middle act,
+                where energies get reshuffled by a thrashing potential, is Lynden-Bell’s
+                <em>violent relaxation</em>.
             </p>
             <p>
-                We can watch this happen with one scalar: the virial ratio <code>Q = 2T/|W|</code>, where T is total
-                kinetic and W total potential energy. Q ≈ 0 for a cold cluster, and the virial theorem says Q → 1 in
-                equilibrium. Our simulation starts at Q = 0.013, spikes to ~1.7 at the collapse bounce (around one
-                free-fall time), and then oscillates about 1:
+                One number tells the story: the virial ratio Q = 2T/|W|. Cold start ≈ 0. Bounce spikes above 1.
+                Settled cluster hangs around 1. Ours opens at 0.013, hits ~1.7 at the bounce, then rings down:
             </p>
 
             <figure>
@@ -259,11 +255,11 @@
                     virialized state (right) — note the halo of stars ejected by the collapse bounce.</figcaption>
             </figure>
 
-            <h2 class="text-slate-900 dark:text-white">Shared physics</h2>
+            <h2 class="text-slate-900 dark:text-white">Same physics, three dialects</h2>
             <p>
-                All three implementations use the same NumPy helpers, the same initial conditions, and the same
-                leapfrog (kick–drift–kick) integrator with softened gravity, so any difference in output would be a
-                framework bug, not physics. Units are G = 1, total mass M = 1, initial radius R = 1.
+                Fair race: identical initial conditions, identical leapfrog, identical softened gravity. If the
+                answers disagree, that is a framework bug, not a universe bug. Units are the usual toy set —
+                G = M = R = 1.
             </p>
             <pre><code>import numpy as np
 
@@ -302,18 +298,19 @@ def virial_ratio(x, y, z, vx, vy, vz):
     W = -0.5 * M * M * np.sum(inv_r)
     return float(2 * T / abs(W))</code></pre>
 
-            <h2 class="text-slate-900 dark:text-white">The AMBER model</h2>
+            <h2 class="text-slate-900 dark:text-white">How it looks in AMBER</h2>
             <p>
-                In AMBER (<code>pip install ambr</code>), agent state lives in a columnar table, and
-                <code>self.agents</code> is a <em>view</em> onto it. The two verbs that matter here are
-                <code>agents.numpy(...)</code> — pull whole columns out as NumPy arrays in one call — and
-                <code>agents.set(...)</code> — write whole columns back. The entire N-body step is three bulk
-                operations and some NumPy:
+                With current AMBER (<code>pip install -U ambr</code>, this post is on
+                <strong class="text-slate-800 dark:text-slate-200">0.4.2</strong>), the stars are rows in a table.
+                Each step I pull the columns I need, do the leapfrog in NumPy, and write them back. Two verbs do
+                almost all the work: <code>agents.numpy(...)</code> and <code>agents.set(...)</code>.
             </p>
             <pre><code>import ambr as am
+print(am.__version__)   # 0.4.2+
+# am.print_status()     # optional: GPU? which speed lane?
 
 class AmberStarCluster(am.Model):
-    # declarative per-step metric -> results['model']
+    # declarative per-step metric -> results.model (RunResults)
     model_reporters = {
         'virial': lambda m: virial_ratio(
             *m.agents.numpy('x', 'y', 'z', 'vx', 'vy', 'vz')),
@@ -324,7 +321,7 @@ class AmberStarCluster(am.Model):
         self.add_agents(N, x=x, y=y, z=z, vx=vx, vy=vy, vz=vz)
 
     def step(self):
-        # one bulk read (Polars views are read-only, so no in-place +=)
+        # bulk read (prefer numpy() + set() for multi-column array math)
         x, y, z, vx, vy, vz = self.agents.numpy('x', 'y', 'z',
                                                 'vx', 'vy', 'vz')
         # leapfrog: kick - drift - kick
@@ -333,17 +330,22 @@ class AmberStarCluster(am.Model):
         x = x + DT * vx;         y = y + DT * vy;         z = z + DT * vz
         ax, ay, az = accelerations(x, y, z)
         vx = vx + 0.5 * DT * ax; vy = vy + 0.5 * DT * ay; vz = vz + 0.5 * DT * az
-        # one bulk write
+        # bulk write
         self.agents.set(x=x, y=y, z=z, vx=vx, vy=vy, vz=vz)
 
-model = AmberStarCluster({'steps': 300, 'seed': SEED, 'show_progress': False})
+# show_progress is off by default in 0.4+
+model = AmberStarCluster({'steps': 300, 'seed': SEED})
 results = model.run()
-print(results['model']['virial'].to_list()[-1])  # -> 1.140</code></pre>
+print(results.model['virial'][-1])  # ~1.14; also results['model']</code></pre>
             <p>
-                Notes on the API: <code>add_agents(n, **columns)</code> bulk-creates the population with columnar
-                initial state (array kwargs must have length n, scalars broadcast); <code>model_reporters</code>
-                evaluates once per step into the results table — no manual data collector wiring. There is no
-                per-agent loop anywhere.
+                Notes on the 0.4 API: <code>add_agents(n, **columns)</code> bulk-creates the population (array kwargs
+                length n, scalars broadcast). <code>model_reporters</code> evaluates once per step into a
+                <code>RunResults</code> object — access metrics as <code>results.model</code> or
+                <code>results['model']</code>. Columnar filters use <code>agents.where(...)</code> /
+                <code>agents.at[ids]</code> (legacy <code>agents.select</code> still works but is deprecated toward
+                1.0). Single-column view assignment like <code>self.agents.x = self.agents.x + …</code> is also
+                valid; for multi-column leapfrog, <code>numpy()</code> + <code>set()</code> stays the cleanest bulk
+                path. There is no per-agent loop anywhere.
             </p>
 
             <h2 class="text-slate-900 dark:text-white">The same model in Mesa</h2>
@@ -432,21 +434,18 @@ class APStarCluster(ap.Model):
         self.stars.kick()
         self.record('virial', self._virial())</code></pre>
 
-            <h2 class="text-slate-900 dark:text-white">Do they agree?</h2>
+            <h2 class="text-slate-900 dark:text-white">Do they even agree?</h2>
             <p>
-                Yes — by construction, and verified. All three runs share the seed and the physics helpers, and the
-                per-step virial trajectories match to <strong class="text-slate-800 dark:text-slate-200">3.6 ×
-                    10⁻¹⁵</strong> (accumulated float round-off; the frameworks merely order the same arithmetic
-                slightly differently). This kind of invariant check before timing is the same methodology AMBER's own
+                They should — same seed, same helpers — and they do. Virial trajectories match to about
+                <strong class="text-slate-800 dark:text-slate-200">3.6 × 10⁻¹⁵</strong>, which is float dust, not
+                physics. Only after that check is it fair to time anything (same habit as AMBER’s own
                 <a href="https://github.com/a11to1n3/AMBER/tree/main/benchmarks" target="_blank"
-                    class="text-blue-600 dark:text-blue-400 hover:underline">benchmark suite</a> uses: never compare
-                speeds until outputs match.
+                    class="text-blue-600 dark:text-blue-400 hover:underline">benchmarks</a>).
             </p>
 
-            <h2 class="text-slate-900 dark:text-white">Benchmarks</h2>
+            <h2 class="text-slate-900 dark:text-white">Who finishes first</h2>
             <p>
-                N = 300 stars, 300 leapfrog steps (three time units — the full collapse story above), single process,
-                Python 3.11, Apple Silicon. One representative run each:
+                Three hundred stars, three hundred steps — the whole collapse above — one process, Apple Silicon:
             </p>
             <table class="text-slate-700 dark:text-slate-300">
                 <thead>
@@ -531,22 +530,22 @@ class APStarCluster(ap.Model):
                 can mix both styles in one model.
             </p>
 
-            <h2 class="text-slate-900 dark:text-white">Takeaways</h2>
-            <ul>
-                <li>If your per-step update can be written as array math over the population — flows, diffusion,
-                    global interactions, epidemiology, and yes, gravity — AMBER's view API
-                    (<code>numpy()</code>/<code>set()</code>, <code>where()</code>, <code>scatter_add()</code>) gives
-                    you order-of-magnitude speedups without leaving the model/agent abstraction.</li>
-                <li>The columnar table is also your results table: no data-collector boilerplate, just
-                    <code>model_reporters</code> and a Polars DataFrame out.</li>
-                <li>Keep physics helpers framework-agnostic (plain NumPy, explicit seed) and check output invariants
-                    before you benchmark anything.</li>
-                <li>For much larger N, AMBER 0.4's GPU backend batches ensembles of runs into single device passes —
-                    that's a topic for a future post.</li>
-            </ul>
+            <h2 class="text-slate-900 dark:text-white">What I took from it</h2>
             <p>
-                Everything above is runnable as-is — <code>pip install ambr mesa agentpy</code> and paste the physics
-                helpers plus whichever model you want to race. Questions, corrections, PhD-position leads:
+                When the update is really “do the same thing to everyone,” columns win. Gravity is an extreme case;
+                epidemiology and diffusion are friendlier ones. Keep the physics helpers boring and shared, check
+                that the answers match, <em>then</em> compare clocks. AMBER’s extras — speed lanes, Numba, GPU
+                ensembles — can wait for posts that need them.
+            </p>
+            <p>
+                The quieter sequel is already up:
+                <a href="amber-mass-segregation.html"
+                    class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">heavy stars sink, light
+                    stars leave</a>. Same kitchen, slower heat.
+            </p>
+            <p>
+                To race it yourself: <code>pip install -U ambr mesa agentpy</code>, paste the helpers, pick a
+                dialect. Questions or PhD-position leads:
                 <a href="mailto:duyanhpham@outlook.com"
                     class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">email me</a>.
             </p>
