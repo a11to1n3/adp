@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Explore twenty AMBER 0.4.4 runs of the Pythagorean three-body problem across a denser mass and position grid.">
+    <title>Three bodies. Change one number. Change the ending. | Anh-Duy Pham</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+    <script>
+        tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] } } } };
+    </script>
+    <style>
+        body {
+            background-color: #f8fafc;
+            background-image: radial-gradient(at 0% 0%, rgba(219, 234, 254, .3), transparent 50%), radial-gradient(at 100% 0%, rgba(224, 231, 255, .3), transparent 50%);
+            background-attachment: fixed;
+            transition: background-color .3s ease;
+        }
+        .dark body {
+            background-color: #020617;
+            background-image: radial-gradient(at 0% 0%, rgba(30, 58, 138, .25), transparent 50%), radial-gradient(at 100% 0%, rgba(49, 46, 129, .25), transparent 50%);
+        }
+        .article-body p { margin-bottom: 1.25rem; line-height: 1.9; }
+        .article-body h2 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.5rem; margin: 2.5rem 0 1rem; }
+        .article-body h3 { font-weight: 600; font-size: 1.125rem; margin: 2rem 0 .75rem; }
+        .article-body ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1.25rem; }
+        .article-body li { margin-bottom: .5rem; line-height: 1.8; }
+        .article-body code { font-size: .875em; background: #e2e8f0; padding: .15em .4em; border-radius: .25rem; }
+        .dark .article-body code { background: #1e293b; }
+        .article-body pre { background: #0f172a; color: #e2e8f0; padding: 1rem 1.25rem; border-radius: .75rem; overflow-x: auto; margin-bottom: 1.25rem; font-size: .8125rem; line-height: 1.65; }
+        .article-body pre code { background: none; padding: 0; }
+        .article-body figure { margin: 2rem 0; }
+        .article-body figcaption { font-size: .8125rem; color: #94a3b8; margin-top: .5rem; text-align: center; line-height: 1.6; }
+        .article-body table { width: 100%; border-collapse: collapse; font-size: .875rem; margin-bottom: 1.25rem; }
+        .article-body th, .article-body td { padding: .6rem .9rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        .dark .article-body th, .dark .article-body td { border-color: #334155; }
+        .article-body th { font-weight: 600; }
+    </style>
+</head>
+
+<body class="text-slate-600 dark:text-slate-400 font-sans antialiased selection:bg-blue-100 selection:text-blue-900 dark:selection:bg-blue-900 dark:selection:text-blue-100">
+    <nav class="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-slate-950/70 border-b border-slate-200/60 dark:border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="../index.html" class="font-serif font-bold text-lg text-slate-900 dark:text-white tracking-tight">Anh-Duy Pham</a>
+            <div class="flex items-center gap-1 sm:gap-2">
+                <a href="../index.html" class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400">Home</a>
+                <a href="../index.html#blog" class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-blue-600 dark:text-blue-400">Blog</a>
+                <a href="../index.html#publications" class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400">Publications</a>
+                <button id="theme-toggle" aria-label="Toggle dark mode" class="ml-1 p-2.5 rounded-full border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 hover:border-blue-300 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400">
+                    <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i><i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+        <header class="mb-10">
+            <a href="../index.html#blog" class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 mb-6"><i data-lucide="arrow-left" class="w-4 h-4"></i> All posts</a>
+            <div class="flex items-center gap-3 mb-4">
+                <span class="px-2 py-1 text-xs font-bold uppercase tracking-wide bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 rounded">Tutorial</span>
+                <span class="text-xs font-mono text-slate-400 dark:text-slate-500">July 2026</span>
+            </div>
+            <h1 class="text-4xl sm:text-5xl font-serif font-bold tracking-tight leading-tight">
+                <span class="text-slate-900 dark:text-white">Three bodies.</span><br>
+                <span class="bg-gradient-to-r from-blue-600 via-indigo-500 to-fuchsia-500 dark:from-blue-400 dark:via-indigo-300 dark:to-fuchsia-400 bg-clip-text text-transparent">Change one number. Change the ending.</span>
+            </h1>
+            <p class="mt-4 text-xl text-slate-500 dark:text-slate-400 font-serif italic leading-relaxed">Explore twenty complete AMBER 0.4.4 runs across a denser parameter grid—each continued until the ending is stable.</p>
+        </header>
+
+        <div class="article-body text-lg text-slate-600 dark:text-slate-400">
+            <p>
+                Put masses 3, 4, and 5 at the vertices opposite the matching sides of a 3–4–5 triangle. Set every velocity to zero. Burrau's Pythagorean problem turns that schoolroom triangle into repeated near-collisions, temporary binaries, and an eventual escape. The classical benchmark uses singular point masses; this interactive experiment uses a disclosed Plummer softening length of 10⁻⁴ so its float64 trajectories can continue through the closest passages.
+            </p>
+            <p>
+                Nothing in the playback below is a prescribed orbit. It contains twenty complete trajectories read from AMBER <code>RunResults.agent_vars</code>: five choices for the first mass crossed with four horizontal offsets. Each one continues until a bound pair and an outward, positive-energy escaper remain separated for ten time units. Move either slider and the page loads another recorded AMBER run. No force calculation occurs in the browser.
+            </p>
+
+            <figure>
+                <div class="rounded-2xl bg-gradient-to-br from-cyan-400/70 via-blue-500/40 to-fuchsia-500/70 p-px shadow-2xl shadow-blue-950/20 dark:shadow-blue-950/50">
+                    <div class="rounded-[15px] bg-slate-950 overflow-hidden">
+                    <canvas id="three-body-stage" width="900" height="520" role="img" aria-label="Interactive playback of twenty recorded AMBER solutions of the Pythagorean three-body problem" class="block w-full h-auto"></canvas>
+                    <div class="border-t border-slate-700/80 bg-gradient-to-b from-slate-900 to-slate-950 px-4 sm:px-5 py-4">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button id="three-play" type="button" class="min-w-24 px-4 py-2.5 rounded-lg bg-blue-500 hover:bg-blue-400 text-white text-sm font-semibold shadow-lg shadow-blue-950/40 transition-colors">▶ Play</button>
+                            <button id="three-reset" type="button" class="px-3 py-2.5 rounded-lg border border-slate-600 hover:border-slate-400 bg-slate-800/60 text-slate-200 text-sm font-semibold transition-colors">↺ Reset</button>
+                            <span id="three-phase" class="ml-auto text-sm font-mono text-slate-300" aria-live="polite">Released from rest · t = 0.00</span>
+                        </div>
+                        <input id="three-scrub" type="range" min="0" max="1000" value="0" step="1" aria-label="Three-body simulation time" class="mt-4 block w-full accent-blue-400 cursor-pointer">
+                        <div class="mt-2 flex justify-between text-[11px] font-mono text-slate-500"><span>t = 0</span><span id="three-time-quarter">t = 0</span><span id="three-time-half">t = 0</span><span id="three-time-end">stable</span></div>
+                        <div class="mt-3 grid gap-3 sm:grid-cols-2 text-xs">
+                            <label for="three-mass" class="block rounded-xl border border-slate-700/80 bg-slate-800/45 px-3 py-2.5 text-slate-300">
+                                <span class="flex justify-between"><span>first mass m₁</span><strong id="three-mass-value" class="font-mono text-white">3.0</strong></span>
+                                <input id="three-mass" type="range" min="0" max="4" value="2" step="1" class="mt-1 block w-full accent-amber-400 cursor-pointer">
+                                <span class="mt-1 flex justify-between font-mono text-[10px] text-slate-500" aria-hidden="true"><span>2.9</span><span>2.95</span><span>3.0</span><span>3.05</span><span>3.1</span></span>
+                            </label>
+                            <label for="three-offset" class="block rounded-xl border border-slate-700/80 bg-slate-800/45 px-3 py-2.5 text-slate-300">
+                                <span class="flex justify-between"><span>initial offset Δx₁</span><strong id="three-offset-value" class="font-mono text-white">0</strong></span>
+                                <input id="three-offset" type="range" min="0" max="3" value="2" step="1" class="mt-1 block w-full accent-cyan-400 cursor-pointer">
+                                <span class="mt-1 flex justify-between font-mono text-[10px] text-slate-500" aria-hidden="true"><span>−.001</span><span>−.0005</span><span>0</span><span>+.001</span></span>
+                            </label>
+                        </div>
+                        <div class="mt-3 flex flex-wrap items-center gap-2 text-xs">
+                            <label class="inline-flex items-center gap-2 text-slate-300 cursor-pointer"><input id="three-compare" type="checkbox" checked class="accent-cyan-400"> ghost the unperturbed 3–4–5 control</label>
+                            <span id="three-outcome" class="ml-auto rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 font-mono text-emerald-300">stable t=184.0 · mass 5 escapes · binary 3+4</span>
+                        </div>
+                        <div class="mt-3 flex flex-wrap justify-center gap-x-5 gap-y-1 border-t border-slate-800 pt-3 text-xs text-slate-400" aria-label="Mass legend">
+                            <span><span class="inline-block w-2.5 h-2.5 rounded-full bg-amber-400 mr-1"></span><span id="three-first-mass-legend">mass 3</span></span>
+                            <span><span class="inline-block w-2.5 h-2.5 rounded-full bg-cyan-400 mr-1"></span>mass 4</span>
+                            <span><span class="inline-block w-2.5 h-2.5 rounded-full bg-fuchsia-400 mr-1"></span>mass 5</span>
+                            <span id="three-divergence" class="font-mono">distance from baseline 0.000</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <figcaption>Solid paths are the selected AMBER run; hollow bodies and faint paths are the unperturbed m₁=3, Δx₁=0 control. Every slider stop is a separately executed trajectory, and each playback ends only after the escape test persists for ten time units.</figcaption>
+            </figure>
+
+            <h2 class="text-slate-900 dark:text-white">A tiny nudge changes who escapes</h2>
+            <p>
+                In the softened control, masses 3 and 4 form the final binary while mass 5 escapes at t=184. Shift mass 3 left by only 0.0005 length units and mass 3 escapes at t=131.6 instead. Shift it right by 0.001 and the system keeps scattering until t=464.6 before mass 3 escapes. The early motion can look nearly identical while later close encounters completely reorder both the ending and how long it takes to arrive.
+            </p>
+            <div class="overflow-x-auto">
+            <table class="text-slate-700 dark:text-slate-300">
+                <thead><tr><th>m₁</th><th>Δx₁</th><th>Stable at</th><th>|ΔE/E|</th><th>Outcome</th></tr></thead>
+                <tbody>
+                    <tr><td>3.0</td><td>0</td><td>184.0</td><td>3.45×10⁻⁵</td><td>3+4 binary; mass 5 escapes</td></tr>
+                    <tr><td>3.0</td><td>−0.0005</td><td>131.6</td><td>1.24×10⁻⁵</td><td>4+5 binary; mass 3 escapes</td></tr>
+                    <tr><td>3.0</td><td>+0.001</td><td>464.6</td><td>3.09×10⁻⁴</td><td>4+5 binary; mass 3 escapes</td></tr>
+                    <tr><td>2.95</td><td>−0.0005</td><td>84.0</td><td>1.22×10⁻⁵</td><td>2.95+5 binary; mass 4 escapes</td></tr>
+                </tbody>
+            </table>
+            </div>
+            <p>
+                These are softened sensitivity experiments, not the arbitrary-precision reference solution. Boekholt and Portegies Zwart used the unsoftened problem to test N-body reliability. They needed a tolerance of 10⁻¹⁴ and 88-bit arithmetic to converge the first three decimal places; a double-precision Hermite run could conserve energy near 10⁻⁸ and still take a different path after the final encounter. The historical calculation likewise required explicit close-encounter regularization. Here the 10⁻⁴ softening is the regularizer, and its effect on a chaotic outcome is part of what the experiment exposes.
+            </p>
+
+            <h2 class="text-slate-900 dark:text-white">Exact initial state</h2>
+            <pre><code># Exact baseline; controls select finite grids for m1 and dx
+mass = np.array([m1, 4.0, 5.0])      # m1 ∈ {2.9, 2.95, 3, 3.05, 3.1}
+x = np.array([1.0 + dx, -2.0, 1.0]) # dx ∈ {-.001, -.0005, 0, .001}
+y = np.array([ 3.0, -1.0, -1.0])
+vx = np.zeros(3)
+vy = np.zeros(3)
+
+# Translate each choice to its center-of-mass frame.
+x -= np.sum(mass*x)/np.sum(mass)
+y -= np.sum(mass*y)/np.sum(mass)
+
+# baseline pair distances: 5, 4, 3
+# each mass equals the opposite side length
+# Plummer softening: epsilon = 1e-4
+# point-mass energy limit: -769/60 = -12.816666...</code></pre>
+            <p>
+                At the center slider settings, the separations are exactly 5 between masses 3 and 4, 4 between masses 3 and 5, and 3 between masses 4 and 5. With zero initial velocities, the angular momentum is zero; the point-mass energy limit is −769/60, while the softened value differs below the displayed precision. The other nineteen settings change only the selected mass and offset, then translate the system back to its center-of-mass frame.
+            </p>
+
+            <h2 class="text-slate-900 dark:text-white">What AMBER actually does</h2>
+            <p>
+                AMBER is the agent engine, recorder, parameter layer, and execution lane; it is not a built-in celestial-mechanics package. The softened force law, adaptive step-doubling integrator, and stability test are explicit model code. At each AMBER step, the model advances 0.02 time units, commits all four state columns together, and records positions, velocities, energy, and closest separation.
+            </p>
+            <pre><code>def derivatives(state, masses):
+    x, y, vx, vy = np.split(state, 4)
+    ax, ay = accelerations(x, y, masses)  # Plummer-softened gravity, ε=1e-4
+    return np.r_[vx, vy, ax, ay]
+
+def rk4_step(state, h, masses):
+    k1 = derivatives(state, masses)
+    k2 = derivatives(state + .5*h*k1, masses)
+    k3 = derivatives(state + .5*h*k2, masses)
+    k4 = derivatives(state + h*k3, masses)
+    return state + h*(k1 + 2*k2 + 2*k3 + k4)/6
+
+def advance_interval(state, masses, interval, rtol, h):
+    remaining = interval
+    while remaining &gt; 1e-14:
+        h = min(h, remaining)
+        whole = rk4_step(state, h, masses)
+        half = rk4_step(rk4_step(state, h/2, masses), h/2, masses)
+        scale = .05*rtol + rtol*np.maximum(abs(state), abs(half))
+        error = np.max(abs(half - whole)/(15*scale))
+        if error &lt;= 1:
+            state = half + (half - whole)/15
+            remaining -= h
+            h = min(.01, h*(2.5 if error == 0 else min(2.5, .9*error**-.2)))
+        else:
+            h *= max(.1, .9*error**-.2)
+    return state, h
+
+class PythagoreanTriple(am.Model):
+    params = {'rtol': (float, 1e-9),
+              'mass3': (float, 3.0),
+              'dx': (float, 0.0)}
+    agent_reporters = ['x', 'y', 'vx', 'vy']
+    model_reporters = {
+        'energy': energy_reporter,
+        'min_separation': separation_reporter,
+    }
+    record_initial = True
+
+    def setup(self):
+        self.next_substep = .01
+        x, y, mass = initial_conditions(self.p.mass3, self.p.dx)
+        self.add_agents(3, x=x, y=y,
+                        vx=np.zeros(3), vy=np.zeros(3),
+                        mass=mass)
+
+    def step_vectorized(self):
+        x, _ = self.agents.borrow('x'); y, _ = self.agents.borrow('y')
+        vx, _ = self.agents.borrow('vx'); vy, _ = self.agents.borrow('vy')
+        mass, _ = self.agents.borrow('mass')
+        state, self.next_substep = advance_interval(
+            np.r_[x, y, vx, vy], masses=mass, interval=.02,
+            rtol=self.p.rtol, h=self.next_substep)
+        x, y, vx, vy = np.split(state, 4)
+        self.agents.commit(x=x, y=y, vx=vx, vy=vy)
+
+results = PythagoreanTriple({'steps': 40000, 'rtol': 1e-9,
+                             'mass3': 3.0, 'dx': 0.0001}) \
+    .cpu(mode='vectorized').run()</code></pre>
+            <h3 class="text-slate-900 dark:text-white">The stopping test</h3>
+            <pre><code># Evaluated on recorded AMBER positions and velocities.
+stable_now = (
+    pair_energy &lt; 0                       # a bound binary
+    and escaper_energy &gt; 0                # unbound from that binary
+    and outward_speed &gt; 0
+    and escaper_distance &gt;= 12
+    and escaper_distance &gt;= 8*binary_separation
+)
+
+streak = streak + 0.1 if stable_now and same_pair else 0
+if streak &gt;= 10:
+    stable_at = time                       # playback endpoint</code></pre>
+            <p>
+                The complete <a href="generate_amber_three_body_frames.py" class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">generator</a> runs all twenty grid points against <code>ambr==0.4.4</code>, tests stability from recorded positions and velocities, and retains synchronized playback frames for comparison. Sampling is dense through t=80 and coarser during long excursions. The browser interpolates those immutable coordinates and draws their trails; it contains no force calculation. The payload checksum is written into the generated data itself.
+            </p>
+
+            <h2 class="text-slate-900 dark:text-white">What is—and is not—being claimed</h2>
+            <ul>
+                <li>All twenty selectable trajectories were genuinely executed and recorded by AMBER 0.4.4.</li>
+                <li>The model uses G=1 and a disclosed Plummer softening length of 10⁻⁴; it is not the singular point-mass reference problem.</li>
+                <li>“Stable” requires one bound pair plus a positive-energy outward escaper at least 12 units and eight binary separations away, continuously for ten time units.</li>
+                <li>The browser performs smooth interpolation only; it never advances the dynamical state.</li>
+                <li>The float64 grid is a sensitivity explorer, not an arbitrary-precision converged reference solution.</li>
+            </ul>
+            <p>
+                Sources: Szebehely and Peters' <a href="https://adsabs.harvard.edu/pdf/1967AJ.....72..876S" target="_blank" class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">1967 complete numerical solution</a>, the modern <a href="https://link.springer.com/article/10.1186/s40668-014-0005-3" target="_blank" class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">N-body reliability study</a>, and the <a href="https://www.scholarpedia.org/article/Three_body_problem" target="_blank" class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">Scholarpedia overview</a> of the general problem.
+            </p>
+        </div>
+
+        <footer class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between">
+                <p class="text-sm text-slate-400 dark:text-slate-600 font-medium">&copy; <span id="year"></span> Anh-Duy Pham</p>
+                <a href="../index.html#blog" class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"><i data-lucide="arrow-left" class="w-4 h-4"></i> Back to all posts</a>
+            </div>
+        </footer>
+    </article>
+
+    <script>
+        lucide.createIcons();
+        document.getElementById('year').textContent = new Date().getFullYear();
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.theme = isDark ? 'dark' : 'light';
+        });
+    </script>
+    <script src="amber-three-body-frames.js"></script>
+    <script>
+        (() => {
+            const data = window.AMBER_THREE_BODY_RUN;
+            const canvas = document.getElementById('three-body-stage');
+            const context = canvas.getContext('2d');
+            const play = document.getElementById('three-play');
+            const reset = document.getElementById('three-reset');
+            const scrub = document.getElementById('three-scrub');
+            const phase = document.getElementById('three-phase');
+            const divergenceLabel = document.getElementById('three-divergence');
+            const compare = document.getElementById('three-compare');
+            const massSlider = document.getElementById('three-mass');
+            const offsetSlider = document.getElementById('three-offset');
+            const massValue = document.getElementById('three-mass-value');
+            const offsetValue = document.getElementById('three-offset-value');
+            const outcomeLabel = document.getElementById('three-outcome');
+            const firstMassLegend = document.getElementById('three-first-mass-legend');
+            const timeQuarter = document.getElementById('three-time-quarter');
+            const timeHalf = document.getElementById('three-time-half');
+            const timeEnd = document.getElementById('three-time-end');
+            if (!data) {
+                context.fillStyle = '#f8fafc'; context.font = '600 18px Inter, sans-serif';
+                context.fillText('AMBER frame data failed to load.', 28, 48); return;
+            }
+
+            const colors = ['#fbbf24', '#22d3ee', '#e879f9'];
+            const colorRgb = [[251, 191, 36], [34, 211, 238], [232, 121, 249]];
+            const stars = Array.from({ length: 96 }, (_, index) => {
+                const x = Math.abs(Math.sin(index * 91.733 + 1.7) * 43758.5453) % 1;
+                const y = Math.abs(Math.sin(index * 47.111 + 8.3) * 24634.6345) % 1;
+                const size = .45 + (index % 5) * .22;
+                return [x, y, size, index * .73];
+            });
+            const cases = data.cases;
+            const massValues = data.meta.parameter_grid.mass3;
+            const offsetValues = data.meta.parameter_grid.dx;
+            const frameCount = cases[0].frames.length;
+            const baselineIndex = cases.findIndex(item => item.mass3 === 3 && item.dx === 0);
+            let selectedMassIndex = Number(massSlider.value);
+            let selectedOffsetIndex = Number(offsetSlider.value);
+            let progress = 0;
+            let playing = false;
+            let startTime = 0;
+            let startProgress = 0;
+            const duration = 18000;
+
+            function selectedCaseIndex() {
+                const mass = massValues[selectedMassIndex];
+                const offset = offsetValues[selectedOffsetIndex];
+                return cases.findIndex(item => item.mass3 === mass && item.dx === offset);
+            }
+
+            function interpolateAtFrame(caseIndex, scaled) {
+                const frames = cases[caseIndex].frames;
+                scaled = Math.max(0, Math.min(frames.length - 1, scaled));
+                const lo = Math.floor(scaled);
+                const hi = Math.min(frames.length - 1, lo + 1);
+                const mix = scaled - lo;
+                return {
+                    step: frames[lo][0] * (1 - mix) + frames[hi][0] * mix,
+                    positions: frames[lo][1].map((point, i) => [
+                        point[0] * (1 - mix) + frames[hi][1][i][0] * mix,
+                        point[1] * (1 - mix) + frames[hi][1][i][1] * mix
+                    ]),
+                    metrics: frames[lo][2].map((metric, i) => metric * (1 - mix) + frames[hi][2][i] * mix)
+                };
+            }
+
+            const cameras = cases.map(item => {
+                const camera = Array(frameCount).fill(4.4);
+                for (let f = 1; f < frameCount; f++) {
+                    let extent = 4.4;
+                    for (const point of item.frames[f][1]) extent = Math.max(extent, Math.abs(point[0]), Math.abs(point[1]));
+                    for (const point of cases[baselineIndex].frames[f][1]) extent = Math.max(extent, Math.abs(point[0]), Math.abs(point[1]));
+                    camera[f] = Math.max(camera[f - 1] * .998, extent * 1.12);
+                }
+                return camera;
+            });
+
+            function rgba(body, alpha) {
+                const [red, green, blue] = colorRgb[body];
+                return `rgba(${red},${green},${blue},${alpha})`;
+            }
+
+            function trail(caseIndex, body, endFrame, map, baseAlpha, dashed) {
+                const frames = cases[caseIndex].frames;
+                const chunkCount = dashed ? 1 : 12;
+                for (let chunk = 0; chunk < chunkCount; chunk++) {
+                    const start = Math.floor(endFrame * chunk / chunkCount);
+                    const finish = Math.floor(endFrame * (chunk + 1) / chunkCount);
+                    context.beginPath();
+                    let started = false;
+                    for (let f = start; f <= finish; f += 2) {
+                        const [x, y] = map(frames[f][1][body]);
+                        if (!started) { context.moveTo(x, y); started = true; }
+                        else context.lineTo(x, y);
+                    }
+                    const age = (chunk + 1) / chunkCount;
+                    context.strokeStyle = rgba(body, dashed ? baseAlpha : baseAlpha * (.18 + .82 * age * age));
+                    context.lineWidth = dashed ? 1 : 1 + age * 1.25;
+                    context.setLineDash(dashed ? [5, 7] : []);
+                    context.stroke();
+                }
+                context.setLineDash([]);
+            }
+
+            function drawBodies(frame, map, alpha, hollow, masses) {
+                for (let i = 0; i < 3; i++) {
+                    const [x, y] = map(frame.positions[i]);
+                    const radius = 5 + masses[i] * 1.35;
+                    if (!hollow) {
+                        const halo = context.createRadialGradient(x, y, radius * .4, x, y, radius * 2.8);
+                        halo.addColorStop(0, rgba(i, .34)); halo.addColorStop(1, rgba(i, 0));
+                        context.beginPath(); context.arc(x, y, radius * 2.8, 0, Math.PI * 2);
+                        context.fillStyle = halo; context.fill();
+                    }
+                    context.beginPath(); context.arc(x, y, radius, 0, Math.PI * 2);
+                    context.globalAlpha = alpha;
+                    if (hollow) { context.strokeStyle = colors[i]; context.lineWidth = 2; context.stroke(); }
+                    else {
+                        context.save(); context.shadowColor = colors[i]; context.shadowBlur = 16;
+                        context.fillStyle = colors[i]; context.fill(); context.restore();
+                    }
+                    context.globalAlpha = 1;
+                    context.fillStyle = hollow ? 'rgba(226,232,240,.65)' : '#020617';
+                    context.font = '600 11px Inter, sans-serif'; context.textAlign = 'center';
+                    context.fillText(String(masses[i]), x, y + 4); context.textAlign = 'left';
+                }
+            }
+
+            function binaryIndices(selected, masses) {
+                const escaper = masses.findIndex(mass => mass === selected.final_escaper_mass);
+                return [0, 1, 2].filter(index => index !== escaper);
+            }
+
+            function drawBinaryLink(frame, map, selected, masses, strength) {
+                const [first, second] = binaryIndices(selected, masses);
+                const start = map(frame.positions[first]);
+                const end = map(frame.positions[second]);
+                context.save();
+                context.strokeStyle = `rgba(226,232,240,${.15 + .45 * strength})`;
+                context.lineWidth = 1.5; context.shadowColor = '#e2e8f0'; context.shadowBlur = 8;
+                context.beginPath(); context.moveTo(...start); context.lineTo(...end); context.stroke();
+                context.restore();
+            }
+
+            function drawBinaryInset(frame, selected, masses, progress, width) {
+                if (progress < .72) return;
+                const [first, second] = binaryIndices(selected, masses);
+                const one = frame.positions[first], two = frame.positions[second];
+                const separation = Math.max(.01, Math.hypot(two[0] - one[0], two[1] - one[1]));
+                const box = { x: width - 188, y: 78, w: 168, h: 106 };
+                context.fillStyle = 'rgba(2,6,23,.82)'; context.fillRect(box.x, box.y, box.w, box.h);
+                context.strokeStyle = 'rgba(148,163,184,.24)'; context.lineWidth = 1; context.strokeRect(box.x, box.y, box.w, box.h);
+                context.fillStyle = 'rgba(203,213,225,.78)'; context.font = '600 10px ui-monospace, SFMono-Regular, Menlo, monospace';
+                context.fillText('SURVIVING BINARY · ZOOM', box.x + 10, box.y + 17);
+                const center = [(one[0] + two[0]) / 2, (one[1] + two[1]) / 2];
+                const localScale = 48 / separation;
+                const localMap = point => [box.x + box.w / 2 + (point[0] - center[0]) * localScale, box.y + 65 - (point[1] - center[1]) * localScale];
+                const a = localMap(one), b = localMap(two);
+                context.strokeStyle = 'rgba(226,232,240,.35)'; context.beginPath(); context.moveTo(...a); context.lineTo(...b); context.stroke();
+                for (const index of [first, second]) {
+                    const [x, y] = localMap(frame.positions[index]);
+                    context.beginPath(); context.arc(x, y, 7, 0, Math.PI * 2); context.fillStyle = colors[index]; context.fill();
+                    context.fillStyle = '#020617'; context.font = '600 9px Inter, sans-serif'; context.textAlign = 'center';
+                    context.fillText(formatMass(masses[index]), x, y + 3); context.textAlign = 'left';
+                }
+            }
+
+            function phaseName(time, stableAt) {
+                if (time < 1.7) return 'Released from rest';
+                if (time < 3.2) return 'First approach';
+                if (time >= stableAt - .05) return 'Stable binary + outward escaper';
+                if (time < 31) return 'Early three-body scattering';
+                return 'Chaotic scattering continues';
+            }
+
+            function formatMass(value) {
+                return Number.isInteger(value) ? String(value) : value.toFixed(2).replace(/0$/, '');
+            }
+
+            function formatOffset(value) {
+                if (value === 0) return '0';
+                const magnitude = Math.abs(value) < .001 ? Math.abs(value).toFixed(4) : Math.abs(value).toFixed(3);
+                return `${value > 0 ? '+' : '−'}${magnitude}`;
+            }
+
+            function render(value) {
+                progress = Math.max(0, Math.min(1, value));
+                scrub.value = String(Math.round(progress * 1000));
+                const caseIndex = selectedCaseIndex();
+                const selected = cases[caseIndex];
+                const scaledFrame = progress * selected.stable_frame;
+                const solid = interpolateAtFrame(caseIndex, scaledFrame);
+                const ghost = interpolateAtFrame(baselineIndex, scaledFrame);
+                const masses = [selected.mass3, 4, 5];
+                const baselineMasses = [3, 4, 5];
+                const width = canvas.width, height = canvas.height;
+                const frameIndex = Math.min(selected.stable_frame, Math.floor(scaledFrame));
+                const world = cameras[caseIndex][frameIndex];
+                const scale = Math.min((width - 54) / (2 * world), (height - 112) / (2 * world));
+                const map = point => [width / 2 + point[0] * scale, height / 2 + 25 - point[1] * scale];
+
+                const bg = context.createRadialGradient(width / 2, height / 2, 10, width / 2, height / 2, width * .72);
+                bg.addColorStop(0, '#14213f'); bg.addColorStop(.55, '#071126'); bg.addColorStop(1, '#020617');
+                context.fillStyle = bg; context.fillRect(0, 0, width, height);
+                for (const [starX, starY, size, phaseOffset] of stars) {
+                    const twinkle = .42 + .28 * Math.sin(progress * 18 + phaseOffset);
+                    context.beginPath(); context.arc(starX * width, 62 + starY * (height - 62), size, 0, Math.PI * 2);
+                    context.fillStyle = `rgba(226,232,240,${twinkle})`; context.fill();
+                }
+                context.strokeStyle = 'rgba(148,163,184,.08)'; context.lineWidth = 1;
+                for (let i = -4; i <= 4; i++) {
+                    const x = width / 2 + i * scale;
+                    const y = height / 2 + 25 + i * scale;
+                    context.beginPath(); context.moveTo(x, 62); context.lineTo(x, height); context.stroke();
+                    context.beginPath(); context.moveTo(0, y); context.lineTo(width, y); context.stroke();
+                }
+
+                for (let body = 0; body < 3; body++) trail(caseIndex, body, frameIndex, map, .78, false);
+                if (compare.checked && caseIndex !== baselineIndex) {
+                    for (let body = 0; body < 3; body++) trail(baselineIndex, body, frameIndex, map, .22, true);
+                    drawBodies(ghost, map, .62, true, baselineMasses);
+                }
+                if (progress > .9) drawBinaryLink(solid, map, selected, masses, (progress - .9) * 10);
+                drawBodies(solid, map, 1, false, masses);
+                drawBinaryInset(solid, selected, masses, progress, width);
+
+                if (solid.step < 12) {
+                    context.strokeStyle = 'rgba(226,232,240,.28)'; context.lineWidth = 1; context.setLineDash([4, 5]);
+                    context.beginPath();
+                    const initial = selected.frames[0][1].map(map);
+                    context.moveTo(...initial[0]); context.lineTo(...initial[1]); context.lineTo(...initial[2]); context.closePath(); context.stroke(); context.setLineDash([]);
+                }
+
+                let delta2 = 0;
+                for (let i = 0; i < 3; i++) delta2 += masses[i] * ((solid.positions[i][0] - ghost.positions[i][0]) ** 2 + (solid.positions[i][1] - ghost.positions[i][1]) ** 2);
+                const divergence = Math.sqrt(delta2 / masses.reduce((a, b) => a + b, 0));
+                const time = solid.step * data.meta.output_dt;
+                const name = phaseName(time, selected.stable_at);
+                const initialEnergy = selected.frames[0][2][0];
+                const relativeEnergy = Math.abs((solid.metrics[0] - initialEnergy) / initialEnergy);
+                phase.textContent = `${name} · t = ${time.toFixed(2)}`;
+                divergenceLabel.textContent = `distance from baseline ${divergence.toFixed(divergence < .001 ? 5 : 3)}`;
+                massValue.textContent = formatMass(selected.mass3);
+                offsetValue.textContent = formatOffset(selected.dx);
+                massSlider.setAttribute('aria-valuetext', formatMass(selected.mass3));
+                offsetSlider.setAttribute('aria-valuetext', formatOffset(selected.dx));
+                firstMassLegend.textContent = `mass ${formatMass(selected.mass3)}`;
+                outcomeLabel.textContent = `stable t=${selected.stable_at.toFixed(1)} · mass ${formatMass(selected.final_escaper_mass)} escapes · binary ${selected.final_binary_masses.map(formatMass).join('+')}`;
+                canvas.setAttribute('aria-label', `Recorded AMBER run with first mass ${formatMass(selected.mass3)} and initial offset ${formatOffset(selected.dx)}; mass ${formatMass(selected.final_escaper_mass)} escapes and masses ${selected.final_binary_masses.map(formatMass).join(' and ')} form the stable binary at time ${selected.stable_at.toFixed(1)}.`);
+                const quarterFrame = selected.frames[Math.round(selected.stable_frame * .25)];
+                const halfFrame = selected.frames[Math.round(selected.stable_frame * .5)];
+                timeQuarter.textContent = `t = ${(quarterFrame[0] * data.meta.output_dt).toFixed(1)}`;
+                timeHalf.textContent = `t = ${(halfFrame[0] * data.meta.output_dt).toFixed(1)}`;
+                timeEnd.textContent = `stable · ${selected.stable_at.toFixed(1)}`;
+
+                context.fillStyle = 'rgba(2,6,23,.84)'; context.fillRect(0, 0, width, 62);
+                context.fillStyle = '#f8fafc'; context.font = '600 17px Inter, sans-serif'; context.fillText(name.toUpperCase(), 18, 25);
+                context.fillStyle = '#93c5fd'; context.font = '600 12px ui-monospace, SFMono-Regular, Menlo, monospace';
+                context.fillText(`AMBER 0.4.4 · m₁=${formatMass(selected.mass3)} · Δx₁=${formatOffset(selected.dx)} · t=${time.toFixed(2)}`, 18, 47);
+                context.textAlign = 'right'; context.fillStyle = 'rgba(203,213,225,.8)';
+                context.fillText(`stable t=${selected.stable_at.toFixed(1)} · |ΔE/E₀|=${relativeEnergy.toExponential(1)}`, width - 18, 47); context.textAlign = 'left';
+            }
+
+            function setPlaying(value) {
+                playing = value; play.textContent = playing ? '❚❚ Pause' : '▶ Play';
+                play.setAttribute('aria-label', playing ? 'Pause three-body playback' : 'Play three-body playback');
+            }
+            function animate(timestamp) {
+                if (!playing) return;
+                if (!startTime) startTime = timestamp;
+                const next = startProgress + (timestamp - startTime) / duration;
+                render(Math.min(1, next));
+                if (next >= 1) { setPlaying(false); return; }
+                requestAnimationFrame(animate);
+            }
+            play.addEventListener('click', () => {
+                if (playing) { setPlaying(false); return; }
+                if (progress >= 1) render(0);
+                startProgress = progress; startTime = 0; setPlaying(true); requestAnimationFrame(animate);
+            });
+            reset.addEventListener('click', () => { setPlaying(false); render(0); });
+            scrub.addEventListener('input', () => { setPlaying(false); render(Number(scrub.value) / 1000); });
+            compare.addEventListener('change', () => render(progress));
+            massSlider.addEventListener('input', () => {
+                selectedMassIndex = Number(massSlider.value);
+                setPlaying(false);
+                render(progress);
+            });
+            offsetSlider.addEventListener('input', () => {
+                selectedOffsetIndex = Number(offsetSlider.value);
+                setPlaying(false);
+                render(progress);
+            });
+            render(0);
+        })();
+    </script>
+</body>
+</html>
