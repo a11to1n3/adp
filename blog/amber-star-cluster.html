@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drop a cold star cluster. Watch it find its feet. | Anh-Duy Pham</title>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -15,207 +12,56 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
 
     <!-- Set dark mode before paint to avoid flash -->
     <script>
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        }
-    </script>
+        document.documentElement.classList.add('js');
+        try { if (localStorage.theme === 'dark') document.documentElement.classList.add('dark'); } catch {}
+    </script><link rel="stylesheet" href="../assets/css/article.css"><script src="../assets/js/site.js"></script><meta name="description" content="Violent relaxation as a stress test for AMBER — and a race against Mesa and AgentPy."></head>
 
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    },
-                }
-            }
-        }
-    </script>
+<body>
 
-    <style>
-        body {
-            background-color: #f8fafc;
-            background-image:
-                radial-gradient(at 0% 0%, rgba(219, 234, 254, 0.3) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(224, 231, 255, 0.3) 0px, transparent 50%);
-            background-attachment: fixed;
-            transition: background-color 0.3s ease;
-        }
-
-        .dark body {
-            background-color: #020617;
-            background-image:
-                radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.25) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(49, 46, 129, 0.25) 0px, transparent 50%);
-        }
-
-        /* Simple article typography */
-        .article-body p {
-            margin-bottom: 1.25rem;
-            line-height: 1.9;
-        }
-
-        .article-body h2 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-size: 1.5rem;
-            margin: 2.5rem 0 1rem 0;
-        }
-
-        .article-body h3 {
-            font-weight: 600;
-            font-size: 1.125rem;
-            margin: 2rem 0 0.75rem 0;
-        }
-
-        .article-body ul {
-            list-style: disc;
-            padding-left: 1.5rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .article-body li {
-            margin-bottom: 0.5rem;
-            line-height: 1.8;
-        }
-
-        .article-body code {
-            font-size: 0.875em;
-            background: #e2e8f0;
-            padding: 0.15em 0.4em;
-            border-radius: 0.25rem;
-        }
-
-        .dark .article-body code {
-            background: #1e293b;
-        }
-
-        .article-body pre {
-            background: #0f172a;
-            color: #e2e8f0;
-            padding: 1rem 1.25rem;
-            border-radius: 0.75rem;
-            overflow-x: auto;
-            margin-bottom: 1.25rem;
-            font-size: 0.8125rem;
-            line-height: 1.65;
-        }
-
-        .article-body pre code {
-            background: none;
-            padding: 0;
-        }
-
-        .article-body figure {
-            margin: 2rem 0;
-        }
-
-        .article-body figure img {
-            max-width: 100%;
-            border-radius: 0.75rem;
-            border: 1px solid #e2e8f0;
-        }
-
-        .dark .article-body figure img {
-            border-color: #334155;
-        }
-
-        .article-body figcaption {
-            font-size: 0.8125rem;
-            color: #94a3b8;
-            margin-top: 0.5rem;
-            text-align: center;
-            line-height: 1.6;
-        }
-
-        .article-body table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.875rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .article-body th,
-        .article-body td {
-            padding: 0.6rem 0.9rem;
-            text-align: left;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .dark .article-body th,
-        .dark .article-body td {
-            border-color: #334155;
-        }
-
-        .article-body th {
-            font-weight: 600;
-        }
-    </style>
-</head>
-
-<body
-    class="text-slate-600 dark:text-slate-400 font-sans antialiased selection:bg-blue-100 selection:text-blue-900 dark:selection:bg-blue-900 dark:selection:text-blue-100">
-
-    <!-- Top Nav -->
-    <nav
-        class="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-slate-950/70 border-b border-slate-200/60 dark:border-slate-800/60">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <a href="../index.html" class="font-serif font-bold text-lg text-slate-900 dark:text-white tracking-tight">Anh-Duy
-                Pham</a>
-            <div class="flex items-center gap-1 sm:gap-2">
-                <a href="../index.html"
-                    class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</a>
-                <a href="../index.html#blog"
-                    class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-blue-600 dark:text-blue-400">Blog</a>
-                <a href="../index.html#publications"
-                    class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Publications</a>
-                <button id="theme-toggle" aria-label="Toggle dark mode"
-                    class="ml-1 p-2.5 rounded-full border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 hover:border-blue-300 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                    <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
-                    <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
-                </button>
-            </div>
+    <a href="#main" class="skip-link">Skip to content</a><!-- Top Nav -->
+    <header class="masthead">
+        <div class="container">
+            <nav class="masthead-inner" aria-label="Main navigation">
+                <a href="../index.html" class="wordmark" aria-label="Anh-Duy Pham, home">Anh-Duy Pham</a>
+                <div class="nav-tools">
+                    <div class="desktop-nav"><a href="../index.html">Home</a><a href="../index.html#news">News</a><a href="../index.html#publications">Publications</a><a href="../index.html#blog">Blog</a><a href="https://scholar.google.com/citations?user=CxMeTj4AAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Scholar</a></div>
+                    <button type="button" id="theme-toggle" class="icon-button" aria-label="Toggle dark mode" aria-pressed="false">
+                        <i data-lucide="moon" class="moon-icon" aria-hidden="true"></i><i data-lucide="sun" class="sun-icon" aria-hidden="true"></i><span class="theme-label">Theme</span>
+                    </button>
+                    <button type="button" id="mobile-menu-toggle" class="icon-button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">Menu</button>
+                </div>
+            </nav>
+            <div id="mobile-menu" class="hidden"><div><a href="../index.html" data-mobile-nav>Home</a><a href="../index.html#news" data-mobile-nav>News</a><a href="../index.html#publications" data-mobile-nav>Publications</a><a href="../index.html#blog" data-mobile-nav>Blog</a><a href="https://scholar.google.com/citations?user=CxMeTj4AAAAJ&hl=en" data-mobile-nav target="_blank" rel="noopener noreferrer">Scholar</a></div></div>
         </div>
-    </nav>
-
-    <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+    </header>
+    <main id="main" class="article-shell container"><article class="article-content">
 
         <!-- Post header -->
-        <header class="mb-10">
-            <a href="../index.html#blog"
-                class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors mb-6">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i> All posts
+        <header class="article-header">
+            <a href="../index.html#blog" class="article-back">
+                 All posts
             </a>
-            <div class="flex items-center gap-3 mb-4">
-                <span
-                    class="px-2 py-1 text-xs font-bold uppercase tracking-wide bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 rounded">Tutorial</span>
-                <span class="text-xs font-mono text-slate-400 dark:text-slate-500">July 2026</span>
+            <h1>Drop a cold star cluster. Watch it find its feet.</h1>
+            <div class="article-meta">
+                <span>Tutorial</span>
+                <time datetime="2026-07">July 2026</time>
             </div>
-            <h1 class="text-4xl sm:text-5xl font-serif font-bold text-slate-900 dark:text-white tracking-tight leading-tight">
-                Drop a cold star cluster. Watch it find its feet.</h1>
-            <p class="mt-4 text-xl text-slate-500 dark:text-slate-400 font-serif italic leading-relaxed">
+            <p class="article-deck">
                 Violent relaxation as a stress test for AMBER — and a race against Mesa and AgentPy.
             </p>
         </header>
 
-        <div class="article-body text-lg text-slate-600 dark:text-slate-400">
+        <div class="article-body">
             <p>
                 I built
-                <a href="https://github.com/a11to1n3/AMBER" target="_blank"
-                    class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">AMBER</a> so agent models
+                <a href="https://github.com/a11to1n3/AMBER" target="_blank">AMBER</a> so agent models
                 could grow without dying in a pure-Python loop — the whole population lives in a
-                <a href="https://pola.rs/" target="_blank"
-                    class="text-blue-600 dark:text-blue-400 hover:underline">Polars</a> table
-                (<a href="https://arxiv.org/abs/2601.16292" target="_blank"
-                    class="text-blue-600 dark:text-blue-400 hover:underline">paper</a>). The question is always: does
+                <a href="https://pola.rs/" target="_blank">Polars</a> table
+                (<a href="https://arxiv.org/abs/2601.16292" target="_blank">paper</a>). The question is always: does
                 that still feel like modelling when the rules get nasty?
             </p>
             <p>
@@ -226,12 +72,12 @@
                 and let them race.
             </p>
 
-            <h2 class="text-slate-900 dark:text-white">The collapse, in plain language</h2>
+            <h2>The collapse, in plain language</h2>
             <p>
                 Sprinkle a few hundred stars in a ball and give them almost no speed. With nothing to hold them up,
                 they fall in. They overshoot, slosh through the middle, fling a few friends into a faint halo, and
                 eventually settle into a compact core that is roughly in balance — what physicists call
-                <strong class="text-slate-800 dark:text-slate-200">virial equilibrium</strong>. The messy middle act,
+                <strong>virial equilibrium</strong>. The messy middle act,
                 where energies get reshuffled by a thrashing potential, is Lynden-Bell’s
                 <em>violent relaxation</em>.
             </p>
@@ -241,21 +87,19 @@
             </p>
 
             <figure>
-                <img src="../assets/images/blog-amber-virial.png"
-                    alt="Virial ratio versus time: starts near zero, spikes to ~1.7 at the free-fall time, then oscillates around 1">
+                <img src="../assets/images/blog-amber-virial.png" alt="Virial ratio versus time: starts near zero, spikes to ~1.7 at the free-fall time, then oscillates around 1" width="880" height="495" loading="lazy">
                 <figcaption>Virial ratio of the N = 300 cluster over three time units (G = M = R = 1). The collapse
                     bounce lands almost exactly at the analytic free-fall time t<sub>ff</sub> = π/2 · √(R³/2GM) ≈ 1.11.
                 </figcaption>
             </figure>
 
             <figure>
-                <img src="../assets/images/blog-amber-snapshots.png"
-                    alt="Three snapshots of the cluster: diffuse cold sphere, dense collapsed core, virialized core with ejected halo stars">
+                <img src="../assets/images/blog-amber-snapshots.png" alt="Three snapshots of the cluster: diffuse cold sphere, dense collapsed core, virialized core with ejected halo stars" width="1056" height="390" loading="lazy">
                 <figcaption>The cluster in the x–y plane: cold sphere (left), maximum collapse (middle), and the
                     virialized state (right) — note the halo of stars ejected by the collapse bounce.</figcaption>
             </figure>
 
-            <h2 class="text-slate-900 dark:text-white">Same physics, three dialects</h2>
+            <h2>Same physics, three dialects</h2>
             <p>
                 Fair race: identical initial conditions, identical leapfrog, identical softened gravity. If the
                 answers disagree, that is a framework bug, not a universe bug. Units are the usual toy set —
@@ -298,19 +142,20 @@ def virial_ratio(x, y, z, vx, vy, vz):
     W = -0.5 * M * M * np.sum(inv_r)
     return float(2 * T / abs(W))</code></pre>
 
-            <h2 class="text-slate-900 dark:text-white">How it looks in AMBER</h2>
+            <h2>How it looks in AMBER</h2>
             <p>
-                With current AMBER (<code>pip install -U ambr</code>, this post is on
-                <strong class="text-slate-800 dark:text-slate-200">0.4.2</strong>), the stars are rows in a table.
-                Each step I pull the columns I need, do the leapfrog in NumPy, and write them back. Two verbs do
-                almost all the work: <code>agents.numpy(...)</code> and <code>agents.set(...)</code>.
+                With the latest AMBER release
+                (<code>pip install -U "ambr&gt;=0.4.4"</code>), the stars are rows in a table. This post targets
+                <strong>0.4.4</strong>.
+                Each step borrows the dense columns, does the leapfrog in NumPy, and commits them together. That is
+                AMBER's tensor lane for interaction-heavy O(N²) kernels.
             </p>
             <pre><code>import ambr as am
-print(am.__version__)   # 0.4.2+
+print(am.__version__)   # 0.4.4+
 # am.print_status()     # optional: GPU? which speed lane?
 
 class AmberStarCluster(am.Model):
-    # declarative per-step metric -> results.model (RunResults)
+    # declarative per-step metric -&gt; results.model (RunResults)
     model_reporters = {
         'virial': lambda m: virial_ratio(
             *m.agents.numpy('x', 'y', 'z', 'vx', 'vy', 'vz')),
@@ -320,35 +165,35 @@ class AmberStarCluster(am.Model):
         x, y, z, vx, vy, vz = initial_conditions()
         self.add_agents(N, x=x, y=y, z=z, vx=vx, vy=vy, vz=vz)
 
-    def step(self):
-        # bulk read (prefer numpy() + set() for multi-column array math)
-        x, y, z, vx, vy, vz = self.agents.numpy('x', 'y', 'z',
-                                                'vx', 'vy', 'vz')
+    def step_vectorized(self):
+        # 0.4.4 tensor lane: borrow dense arrays for the O(N²) kernel
+        x, _ = self.agents.borrow('x');   y, _ = self.agents.borrow('y')
+        z, _ = self.agents.borrow('z');  vx, _ = self.agents.borrow('vx')
+        vy, _ = self.agents.borrow('vy'); vz, _ = self.agents.borrow('vz')
         # leapfrog: kick - drift - kick
         ax, ay, az = accelerations(x, y, z)
         vx = vx + 0.5 * DT * ax; vy = vy + 0.5 * DT * ay; vz = vz + 0.5 * DT * az
         x = x + DT * vx;         y = y + DT * vy;         z = z + DT * vz
         ax, ay, az = accelerations(x, y, z)
         vx = vx + 0.5 * DT * ax; vy = vy + 0.5 * DT * ay; vz = vz + 0.5 * DT * az
-        # bulk write
-        self.agents.set(x=x, y=y, z=z, vx=vx, vy=vy, vz=vz)
+        # atomic tensor-lane write-back
+        self.agents.commit(x=x, y=y, z=z, vx=vx, vy=vy, vz=vz)
 
-# show_progress is off by default in 0.4+
+# 0.4.4 makes the vectorized CPU lane explicit; show_progress is off by default
 model = AmberStarCluster({'steps': 300, 'seed': SEED})
-results = model.run()
+results = model.cpu(mode='vectorized').run()
 print(results.model['virial'][-1])  # ~1.14; also results['model']</code></pre>
             <p>
-                Notes on the 0.4 API: <code>add_agents(n, **columns)</code> bulk-creates the population (array kwargs
-                length n, scalars broadcast). <code>model_reporters</code> evaluates once per step into a
-                <code>RunResults</code> object — access metrics as <code>results.model</code> or
-                <code>results['model']</code>. Columnar filters use <code>agents.where(...)</code> /
-                <code>agents.at[ids]</code> (legacy <code>agents.select</code> still works but is deprecated toward
-                1.0). Single-column view assignment like <code>self.agents.x = self.agents.x + …</code> is also
-                valid; for multi-column leapfrog, <code>numpy()</code> + <code>set()</code> stays the cleanest bulk
-                path. There is no per-agent loop anywhere.
+                Notes on the 0.4.4 API: <code>add_agents(n, **columns)</code> bulk-creates the population (array
+                kwargs length n, scalars broadcast). The explicit <code>step_vectorized()</code> hook pairs with
+                <code>cpu(mode='vectorized')</code>; <code>step()</code> remains a compatibility fallback. For this
+                dense O(N²) calculation, <code>borrow()</code> / <code>commit()</code> is AMBER's tensor lane.
+                <code>model_reporters</code> evaluates once per step into a <code>RunResults</code> object — access
+                metrics as <code>results.model</code> or <code>results['model']</code>. Columnar filters use
+                <code>agents.where(...)</code> / <code>agents.at[ids]</code>. There is no per-agent loop anywhere.
             </p>
 
-            <h2 class="text-slate-900 dark:text-white">The same model in Mesa</h2>
+            <h2>The same model in Mesa</h2>
             <p>
                 Mesa 3.x is the classic object-per-agent design: each star is an object, and the model tells the
                 population to run methods. One subtlety — with in-place per-agent updates, you must split the step
@@ -368,7 +213,7 @@ class MesaStar(mesa.Agent):
         ax = ay = az = 0.0
         for other in self.model.agents:      # O(N) pure-Python loop,
             if other is self:                # inside an O(N) dispatch
-                continue                     # -> O(N^2) per phase
+                continue                     # -&gt; O(N^2) per phase
             dx = other.x - self.x
             dy = other.y - self.y
             dz = other.z - self.z
@@ -402,7 +247,7 @@ class MesaStarCluster(mesa.Model):
         self.agents.do('compute_force')  # forces at t + dt
         self.agents.do('kick')</code></pre>
 
-            <h2 class="text-slate-900 dark:text-white">…and in AgentPy</h2>
+            <h2>…and in AgentPy</h2>
             <p>
                 AgentPy reads almost identically to Mesa here; its <code>AgentList</code> broadcasts method calls
                 (<code>self.stars.kick()</code>), which is pleasant, but each call still dispatches into a Python
@@ -434,76 +279,70 @@ class APStarCluster(ap.Model):
         self.stars.kick()
         self.record('virial', self._virial())</code></pre>
 
-            <h2 class="text-slate-900 dark:text-white">Do they even agree?</h2>
+            <h2>Do they even agree?</h2>
             <p>
                 They should — same seed, same helpers — and they do. Virial trajectories match to about
-                <strong class="text-slate-800 dark:text-slate-200">3.6 × 10⁻¹⁵</strong>, which is float dust, not
+                <strong>3.6 × 10⁻¹⁵</strong>, which is float dust, not
                 physics. Only after that check is it fair to time anything (same habit as AMBER’s own
-                <a href="https://github.com/a11to1n3/AMBER/tree/main/benchmarks" target="_blank"
-                    class="text-blue-600 dark:text-blue-400 hover:underline">benchmarks</a>).
+                <a href="https://github.com/a11to1n3/AMBER/tree/main/benchmarks" target="_blank">benchmarks</a>).
             </p>
 
-            <h2 class="text-slate-900 dark:text-white">Who finishes first</h2>
+            <h2>Who finishes first</h2>
             <p>
                 Three hundred stars, three hundred steps — the whole collapse above — one process, Apple Silicon:
             </p>
-            <table class="text-slate-700 dark:text-slate-300">
+            <div class="table-scroll" role="region" aria-label="Framework runtime comparison" tabindex="0"><table>
                 <thead>
                     <tr>
-                        <th>Framework</th>
-                        <th>Architecture</th>
-                        <th style="text-align:right">Wall time</th>
-                        <th style="text-align:right">vs AMBER</th>
+                        <th scope="col">Framework</th>
+                        <th scope="col">Architecture</th>
+                        <th class="numeric-cell" scope="col">Wall time</th>
+                        <th class="numeric-cell" scope="col">vs AMBER</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td><strong>AMBER (vectorized)</strong></td>
                         <td>Columnar (Polars) + NumPy broadcast</td>
-                        <td style="text-align:right"><strong>3.4 s</strong></td>
-                        <td style="text-align:right">1×</td>
+                        <td class="numeric-cell"><strong>3.4 s</strong></td>
+                        <td class="numeric-cell">1×</td>
                     </tr>
                     <tr>
                         <td>AgentPy 0.1.5</td>
                         <td>Object per agent</td>
-                        <td style="text-align:right">69 s</td>
-                        <td style="text-align:right">20×</td>
+                        <td class="numeric-cell">69 s</td>
+                        <td class="numeric-cell">20×</td>
                     </tr>
                     <tr>
                         <td>Mesa 3.3</td>
                         <td>Object per agent</td>
-                        <td style="text-align:right">75 s</td>
-                        <td style="text-align:right">22×</td>
+                        <td class="numeric-cell">75 s</td>
+                        <td class="numeric-cell">22×</td>
                     </tr>
                 </tbody>
             </table>
-            <h2 class="text-slate-900 dark:text-white">Watch the race</h2>
+            </div><h2>Watch the race</h2>
             <p>
                 Numbers in a table are easy to shrug off, so here are the three actual runs replayed side by side.
                 Each panel plays back the x–y positions <em>recorded from that framework's own run</em> (every 3rd
-                step, diagnostics off). In <strong class="text-slate-800 dark:text-slate-200">Race</strong> mode,
+                step, diagnostics off). In <strong>Race</strong> mode,
                 each panel advances at its framework's measured wall-clock speed — AMBER finishes its 300 steps in
-                1.2&nbsp;s of compute while Mesa and AgentPy are still in free fall. In <strong
-                    class="text-slate-800 dark:text-slate-200">Synced</strong> mode the panels step together, so you
+                1.2 s of compute while Mesa and AgentPy are still in free fall. In <strong>Synced</strong> mode the panels step together, so you
                 can verify the trajectories are indistinguishable.
             </p>
 
-            <div id="race-widget"
-                class="not-prose my-8 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 sm:p-6">
+            <div id="race-widget" class="experiment" aria-label="Recorded star-cluster race">
                 <!-- Controls -->
-                <div class="flex flex-wrap items-center gap-2 mb-4">
-                    <div class="inline-flex rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden text-sm font-semibold">
-                        <button id="race-mode-race" class="px-3 py-1.5">Race</button>
-                        <button id="race-mode-sync" class="px-3 py-1.5">Synced</button>
+                <div class="experiment-toolbar">
+                    <div class="control-row" role="group" aria-label="Playback mode">
+                        <button id="race-mode-race" type="button" class="control-button" aria-pressed="true">Race</button>
+                        <button id="race-mode-sync" type="button" class="control-button" aria-pressed="false">Synced</button>
                     </div>
-                    <button id="race-play"
-                        class="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors">▶ Play</button>
-                    <button id="race-restart"
-                        class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:border-blue-300 dark:hover:border-blue-600 transition-colors">↺ Restart</button>
-                    <label id="race-speed-wrap" class="ml-auto text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2">
+                    <button id="race-play" type="button" class="control-button control-button--primary" aria-label="Play recorded star-cluster race" aria-pressed="false">Play</button>
+                    <button id="race-restart" type="button" class="control-button" aria-label="Restart recorded star-cluster race">Restart</button>
+                    <label id="race-speed-wrap" class="control-label" for="race-speed">
                         time compression
-                        <select id="race-speed"
-                            class="rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2 py-1 text-xs">
+                        <select id="race-speed">
                             <option value="1">1× (real time)</option>
                             <option value="5" selected>5×</option>
                             <option value="20">20×</option>
@@ -511,13 +350,13 @@ class APStarCluster(ap.Model):
                     </label>
                 </div>
                 <!-- Panels -->
-                <div id="race-panels" class="grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
-                <p class="mt-4 text-xs text-slate-400 dark:text-slate-500 leading-relaxed">
+                <div id="race-panels" class="race-panels"></div>
+                <p class="experiment-note">
                     Wall-clock times measured on the runs shown (Python 3.11, Apple Silicon, simulation loop only):
-                    AMBER 1.19&nbsp;s, AgentPy 30.9&nbsp;s, Mesa 29.0&nbsp;s for 300 steps at N&nbsp;=&nbsp;300.
-                    Final-frame positions agree across frameworks to 2.4&nbsp;×&nbsp;10⁻¹⁴.
+                    AMBER 1.19 s, AgentPy 30.9 s, Mesa 29.0 s for 300 steps at N = 300.
+                    Final-frame positions agree across frameworks to 2.4 × 10⁻¹⁴.
                 </p>
-            </div>
+            <noscript><p class="no-script-note">JavaScript is required to replay the recorded trajectories. The figures and timing table above show the collapse and measured framework runtimes.</p></noscript></div>
 
             <p>
                 Two honest caveats. First, all-pairs gravity is O(N²) <em>everywhere</em> — AMBER doesn't change the
@@ -530,7 +369,7 @@ class APStarCluster(ap.Model):
                 can mix both styles in one model.
             </p>
 
-            <h2 class="text-slate-900 dark:text-white">What I took from it</h2>
+            <h2>What I took from it</h2>
             <p>
                 When the update is really “do the same thing to everyone,” columns win. Gravity is an extreme case;
                 epidemiology and diffusion are friendlier ones. Keep the physics helpers boring and shared, check
@@ -539,41 +378,28 @@ class APStarCluster(ap.Model):
             </p>
             <p>
                 The quieter sequel is already up:
-                <a href="amber-mass-segregation.html"
-                    class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">heavy stars sink, light
+                <a href="amber-mass-segregation.html">heavy stars sink, light
                     stars leave</a>. Same kitchen, slower heat.
             </p>
             <p>
-                To race it yourself: <code>pip install -U ambr mesa agentpy</code>, paste the helpers, pick a
-                dialect. Questions or PhD-position leads:
-                <a href="mailto:duyanhpham@outlook.com"
-                    class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">email me</a>.
+                To race it yourself, install AMBER 0.4.4 with
+                <code>pip install -U "ambr&gt;=0.4.4" mesa agentpy</code>,
+                paste the helpers, and pick a dialect. Questions or AI/ML Engineer openings:
+                <a href="mailto:duyanhpham@outlook.com">duyanhpham(at)outlook.com</a>.
             </p>
         </div>
 
         <!-- Footer -->
-        <footer class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">
-            <div class="flex items-center justify-between">
-                <p class="text-sm text-slate-400 dark:text-slate-600 font-medium">&copy; <span id="year"></span>
+        <footer class="article-footer">
+            <p>© <span id="year">2026</span>
                     Anh-Duy Pham</p>
-                <a href="../index.html#blog"
-                    class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to all posts
+                <a href="../index.html#blog">
+                     Back to all posts
                 </a>
-            </div>
-        </footer>
+            </footer>
     </article>
 
-    <script>
-        lucide.createIcons();
-        document.getElementById('year').textContent = new Date().getFullYear();
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            const isDark = document.documentElement.classList.toggle('dark');
-            localStorage.theme = isDark ? 'dark' : 'light';
-        });
-    </script>
-
-    <!-- Recorded trajectories (window.CLUSTER_RACE) -->
+    </main><!-- Recorded trajectories (window.CLUSTER_RACE) -->
     <script src="../assets/data/star-cluster-race-data.js"></script>
     <script>
         (function () {
@@ -602,21 +428,20 @@ class APStarCluster(ap.Model):
             const panelsEl = document.getElementById('race-panels');
             frameworks.forEach(f => {
                 const el = document.createElement('div');
+                el.className = 'race-panel';
                 el.innerHTML = `
-                    <div class="text-sm font-bold text-slate-900 dark:text-white">${f.name}</div>
-                    <div class="text-[11px] text-slate-400 dark:text-slate-500 mb-2">${f.arch}</div>
-                    <div class="relative">
-                        <canvas class="w-full rounded-lg block" style="background:#0f172a"></canvas>
-                        <div class="race-done absolute inset-0 hidden items-center justify-center rounded-lg"
-                             style="background:rgba(15,23,42,0.55)">
-                            <span class="px-2.5 py-1 rounded-full bg-emerald-500 text-white text-xs font-bold">
-                                ✓ done in ${f.wall.toFixed(1)} s</span>
+                    <h3 class="race-panel-heading">${f.name}</h3>
+                    <div class="control-caption">${f.arch}</div>
+                    <div class="race-canvas-frame">
+                        <canvas width="260" height="260" role="img" aria-label="${f.name} recorded star-cluster positions"></canvas>
+                        <div class="race-done" hidden>
+                            <span>Done in ${f.wall.toFixed(1)} s</span>
                         </div>
                     </div>
-                    <div class="mt-2 h-1.5 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                        <div class="race-bar h-full rounded-full" style="width:0%;background:#2563eb"></div>
+                    <div class="race-progress" aria-hidden="true">
+                        <div class="race-bar"></div>
                     </div>
-                    <div class="flex justify-between mt-1 text-[11px] font-mono text-slate-400 dark:text-slate-500">
+                    <div class="experiment-stats">
                         <span class="race-step">step 0 / ${D.steps}</span>
                         <span class="race-clock">0.0 s</span>
                     </div>`;
@@ -644,7 +469,7 @@ class APStarCluster(ap.Model):
                 ctx.clearRect(0, 0, px, px);
                 const base = idx * n * 2;
                 const s = px / (2 * RANGE);
-                ctx.fillStyle = '#fbbf24';
+                ctx.fillStyle = window.siteToken('--chart-series-a');
                 for (let i = 0; i < n; i++) {
                     const x = f.data[base + 2 * i] / D.scale;
                     const y = f.data[base + 2 * i + 1] / D.scale;
@@ -677,16 +502,15 @@ class APStarCluster(ap.Model):
                     const idx = frameIndexFor(f);
                     drawFrame(f, idx);
                     const stepNow = Math.min(D.steps, (idx + 1) * D.stride);
-                    f.bar.style.width = (100 * idx / (F - 1)) + '%';
+                    f.bar.style.transform = `scaleX(${idx / (F - 1)})`;
                     f.stepEl.textContent = `step ${stepNow} / ${D.steps}`;
                     const wallNow = mode === 'sync'
                         ? (idx / (F - 1)) * f.wall
                         : Math.min(f.wall, tAnim * parseFloat(speedSel.value));
                     f.clockEl.textContent = wallNow.toFixed(1) + ' s';
                     const done = idx >= F - 1;
-                    f.doneEl.classList.toggle('hidden', !(mode === 'race' && done));
-                    f.doneEl.classList.toggle('flex', mode === 'race' && done);
-                    f.bar.style.background = done ? '#10b981' : '#2563eb';
+                    f.doneEl.hidden = !(mode === 'race' && done);
+                    f.bar.classList.toggle('is-complete', done);
                 });
             }
 
@@ -705,7 +529,9 @@ class APStarCluster(ap.Model):
 
             function setPlaying(p) {
                 playing = p;
-                playBtn.textContent = p ? '❚❚ Pause' : '▶ Play';
+                playBtn.textContent = p ? 'Pause' : 'Play';
+                playBtn.setAttribute('aria-pressed', String(p));
+                playBtn.setAttribute('aria-label', `${p ? 'Pause' : 'Play'} recorded star-cluster race`);
                 if (p) { last = null; raf = requestAnimationFrame(tick); }
                 else if (raf) cancelAnimationFrame(raf);
             }
@@ -714,12 +540,10 @@ class APStarCluster(ap.Model):
 
             function setMode(m) {
                 mode = m;
-                speedWrap.style.display = m === 'race' ? '' : 'none';
+                speedWrap.hidden = m !== 'race';
                 [modeRace, modeSync].forEach(b => {
                     const active = (b === modeRace) === (m === 'race');
-                    b.className = 'px-3 py-1.5 ' + (active
-                        ? 'bg-blue-600 text-white'
-                        : 'text-slate-600 dark:text-slate-300 hover:text-blue-600');
+                    b.setAttribute('aria-pressed', String(active));
                 });
                 restart();
             }
@@ -733,6 +557,7 @@ class APStarCluster(ap.Model):
             modeRace.addEventListener('click', () => setMode('race'));
             modeSync.addEventListener('click', () => setMode('sync'));
             window.addEventListener('resize', () => { sizeCanvases(); render(); });
+            window.addEventListener('site:theme', render);
 
             sizeCanvases();
             setMode('race');

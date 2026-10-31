@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -8,7 +8,6 @@
     <title>Welcome to my research blog | Anh-Duy Pham</title>
 
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -16,193 +15,86 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
 
     <!-- Set dark mode before paint to avoid flash -->
     <script>
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        }
-    </script>
+        document.documentElement.classList.add('js');
+        try { if (localStorage.theme === 'dark') document.documentElement.classList.add('dark'); } catch {}
 
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    },
-                }
-            }
-        }
-    </script>
+    </script><link rel="stylesheet" href="../assets/css/article.css"><script src="../assets/js/site.js"></script><meta name="description" content="Welcome to my research blog. Research notes by Anh-Duy Pham."></head>
 
-    <style>
-        body {
-            background-color: #f8fafc;
-            background-image:
-                radial-gradient(at 0% 0%, rgba(219, 234, 254, 0.3) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(224, 231, 255, 0.3) 0px, transparent 50%);
-            background-attachment: fixed;
-            transition: background-color 0.3s ease;
-        }
+<body>
 
-        .dark body {
-            background-color: #020617;
-            background-image:
-                radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.25) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(49, 46, 129, 0.25) 0px, transparent 50%);
-        }
-
-        /* Simple article typography */
-        .article-body p {
-            margin-bottom: 1.25rem;
-            line-height: 1.9;
-        }
-
-        .article-body h2 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-size: 1.5rem;
-            margin: 2.5rem 0 1rem 0;
-        }
-
-        .article-body ul {
-            list-style: disc;
-            padding-left: 1.5rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .article-body li {
-            margin-bottom: 0.5rem;
-            line-height: 1.8;
-        }
-
-        .article-body code {
-            font-size: 0.875em;
-            background: #e2e8f0;
-            padding: 0.15em 0.4em;
-            border-radius: 0.25rem;
-        }
-
-        .dark .article-body code {
-            background: #1e293b;
-        }
-
-        .article-body pre {
-            background: #0f172a;
-            color: #e2e8f0;
-            padding: 1rem 1.25rem;
-            border-radius: 0.75rem;
-            overflow-x: auto;
-            margin-bottom: 1.25rem;
-            font-size: 0.875rem;
-            line-height: 1.7;
-        }
-
-        .article-body pre code {
-            background: none;
-            padding: 0;
-        }
-    </style>
-</head>
-
-<body
-    class="text-slate-600 dark:text-slate-400 font-sans antialiased selection:bg-blue-100 selection:text-blue-900 dark:selection:bg-blue-900 dark:selection:text-blue-100">
-
-    <!-- Top Nav -->
-    <nav
-        class="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-slate-950/70 border-b border-slate-200/60 dark:border-slate-800/60">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <a href="../index.html" class="font-serif font-bold text-lg text-slate-900 dark:text-white tracking-tight">Anh-Duy
-                Pham</a>
-            <div class="flex items-center gap-1 sm:gap-2">
-                <a href="../index.html"
-                    class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</a>
-                <a href="../index.html#blog"
-                    class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-blue-600 dark:text-blue-400">Blog</a>
-                <a href="../index.html#publications"
-                    class="hidden sm:inline-block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Publications</a>
-                <button id="theme-toggle" aria-label="Toggle dark mode"
-                    class="ml-1 p-2.5 rounded-full border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 hover:border-blue-300 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                    <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
-                    <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
-                </button>
-            </div>
+    <a href="#main" class="skip-link">Skip to content</a><!-- Top Nav -->
+    <header class="masthead">
+        <div class="container">
+            <nav class="masthead-inner" aria-label="Main navigation">
+                <a href="../index.html" class="wordmark" aria-label="Anh-Duy Pham, home">Anh-Duy Pham</a>
+                <div class="nav-tools">
+                    <div class="desktop-nav"><a href="../index.html">Home</a><a href="../index.html#news">News</a><a href="../index.html#publications">Publications</a><a href="../index.html#blog">Blog</a><a href="https://scholar.google.com/citations?user=CxMeTj4AAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Scholar</a></div>
+                    <button type="button" id="theme-toggle" class="icon-button" aria-label="Toggle dark mode" aria-pressed="false">
+                        <i data-lucide="moon" class="moon-icon" aria-hidden="true"></i><i data-lucide="sun" class="sun-icon" aria-hidden="true"></i><span class="theme-label">Theme</span>
+                    </button>
+                    <button type="button" id="mobile-menu-toggle" class="icon-button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">Menu</button>
+                </div>
+            </nav>
+            <div id="mobile-menu" class="hidden"><div><a href="../index.html" data-mobile-nav>Home</a><a href="../index.html#news" data-mobile-nav>News</a><a href="../index.html#publications" data-mobile-nav>Publications</a><a href="../index.html#blog" data-mobile-nav>Blog</a><a href="https://scholar.google.com/citations?user=CxMeTj4AAAAJ&hl=en" data-mobile-nav target="_blank" rel="noopener noreferrer">Scholar</a></div></div>
         </div>
-    </nav>
-
-    <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+    </header>
+    <main id="main" class="article-shell container"><article class="article-content">
 
         <!-- Post header -->
-        <header class="mb-10">
-            <a href="../index.html#blog"
-                class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors mb-6">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i> All posts
+        <header class="article-header">
+            <a href="../index.html#blog" class="article-back">
+                 All posts
             </a>
-            <div class="flex items-center gap-3 mb-4">
-                <!-- ============ EDIT: tag + date ============ -->
-                <span
-                    class="px-2 py-1 text-xs font-bold uppercase tracking-wide bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 rounded">Blog</span>
-                <span class="text-xs font-mono text-slate-400 dark:text-slate-500">July 2026</span>
-            </div>
             <!-- ============ EDIT: post title ============ -->
-            <h1 class="text-4xl sm:text-5xl font-serif font-bold text-slate-900 dark:text-white tracking-tight leading-tight">
-                Welcome to my research blog</h1>
-        </header>
+            <h1>Welcome to my research blog</h1>
+        <div class="article-meta">
+                <!-- ============ EDIT: tag + date ============ -->
+                <span>Blog</span>
+                <time>July 2026</time>
+            </div>
+            </header>
 
         <!-- ============ EDIT: article body ============ -->
-        <div class="article-body text-lg text-slate-600 dark:text-slate-400">
+        <div class="article-body">
             <p>
                 I've decided to start writing here — partly to share things I wish someone had written down when I was
                 figuring them out, and partly because explaining something in plain words is still the best test of
                 whether I actually understand it.
             </p>
 
-            <h2 class="text-slate-900 dark:text-white">What to expect</h2>
+            <h2>What to expect</h2>
             <ul>
-                <li><strong class="text-slate-800 dark:text-slate-200">Tutorials</strong> on graph-based time series
+                <li><strong>Tutorials</strong> on graph-based time series
                     forecasting, from building graph structures out of raw sensor or demand data to training and
                     interpreting the models.</li>
-                <li><strong class="text-slate-800 dark:text-slate-200">Agent-based modelling</strong> notes — designing
+                <li><strong>Agent-based modelling</strong> notes — designing
                     simulations of economic and environmental systems, and making them fast in Python.</li>
-                <li><strong class="text-slate-800 dark:text-slate-200">Explainable AI</strong> in practice: what
+                <li><strong>Explainable AI</strong> in practice: what
                     actually helps when you need to justify a forecast to a decision-maker.</li>
                 <li>Occasional notes from the PhD trenches — tooling, writing, and the craft of research itself.</li>
             </ul>
 
             <p>
                 If any of this sounds useful, check back soon — or reach out via the links on my
-                <a href="../index.html" class="font-semibold text-blue-600 dark:text-blue-400 hover:underline">homepage</a>.
+                <a href="../index.html">homepage</a>.
                 I'm always happy to talk about forecasting, simulation, or supply chains.
             </p>
         </div>
 
         <!-- Footer -->
-        <footer class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">
-            <div class="flex items-center justify-between">
-                <p class="text-sm text-slate-400 dark:text-slate-600 font-medium">&copy; <span id="year"></span>
+        <footer class="article-footer">
+            <p>© <span id="year">2026</span>
                     Anh-Duy Pham</p>
-                <a href="../index.html#blog"
-                    class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to all posts
+                <a href="../index.html#blog">
+                     Back to all posts
                 </a>
-            </div>
-        </footer>
+            </footer>
     </article>
 
-    <script>
-        lucide.createIcons();
-        document.getElementById('year').textContent = new Date().getFullYear();
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            const isDark = document.documentElement.classList.toggle('dark');
-            localStorage.theme = isDark ? 'dark' : 'light';
-        });
-    </script>
-</body>
+    </main></body>
 
 </html>

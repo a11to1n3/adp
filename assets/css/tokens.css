@@ -1,0 +1,37 @@
+:root {
+  color-scheme: light;
+  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
+  --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.25rem; --text-xl: 1.5625rem; --text-2xl: 1.953rem; --text-3xl: 2.441rem;
+  --text-display-s: 1.75rem; --text-display: 2.125rem;
+  --text-section: 1.5rem; --text-title: 1.125rem; --text-lead: 1.0625rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
+  --color-error: oklch(52% 0.19 27); --color-success: oklch(50% 0.12 150);
+  --container: 960px; --gutter: 32px; --gap-columns: 24px; --section-gap-s: 40px; --section-gap: 48px; --section-gap-l: 64px;
+  --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
+  --color-paper: oklch(99.8% 0.001 250); --color-paper-2: oklch(98% 0.003 250); --color-paper-3: oklch(95% 0.005 250);
+  --color-ink: oklch(25% 0.012 250); --color-ink-2: oklch(34% 0.012 250); --color-muted: oklch(48% 0.012 250);
+  --color-rule: oklch(88% 0.008 250); --color-rule-2: oklch(66% 0.012 250);
+  --color-accent: oklch(47% 0.17 252); --color-accent-ink: oklch(99% 0.005 250); --color-focus: oklch(47% 0.17 252);
+  --color-guide: oklch(55% 0.16 252 / 0.5);
+  --font-display: "Source Sans 3", ui-sans-serif, system-ui, sans-serif; --font-body: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+  --font-outlier: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --article-measure: 70ch; --article-text: 1.0625rem; --article-title: 2rem; --article-title-small: 1.75rem; --code-text: 0.875rem;
+  --chart-paper: oklch(20% 0.018 250); --chart-ink: oklch(94% 0.01 250); --chart-muted: oklch(74% 0.02 250); --chart-grid: oklch(36% 0.018 250);
+  --chart-series-a: oklch(84% 0.16 85); --chart-series-b: oklch(78% 0.13 220); --chart-series-c: oklch(76% 0.18 325); --chart-neutral: oklch(70% 0.025 250);
+  --chart-overlay: color-mix(in oklab, var(--chart-paper) 78%, transparent);
+  --radius-card: 0; --radius-pill: 0; --rule-hair: 1px;
+  --shadow-card: none;
+  --tracking-display: 0; --display-weight: 600;
+  --plot-172554: oklch(25% 0.06 262); --plot-020617: oklch(16% 0.025 262);
+  --plot-e2e8f0: oklch(93% 0.012 250); --plot-cbd5e1: oklch(87% 0.018 250);
+  --plot-fbbf24: oklch(84% 0.16 85); --plot-22d3ee: oklch(80% 0.12 210); --plot-e879f9: oklch(76% 0.19 325);
+}
+.dark {
+  color-scheme: dark;
+  --color-paper: oklch(19% 0.012 250); --color-paper-2: oklch(22% 0.012 250); --color-paper-3: oklch(25% 0.014 250);
+  --color-ink: oklch(94% 0.01 250); --color-ink-2: oklch(85% 0.012 250); --color-muted: oklch(72% 0.012 250);
+  --color-rule: oklch(36% 0.012 250); --color-rule-2: oklch(53% 0.014 250);
+  --color-accent: oklch(75% 0.13 252); --color-accent-ink: oklch(19% 0.012 250); --color-focus: oklch(77% 0.14 252);
+  --color-guide: oklch(76% 0.13 252 / 0.5);
+}
