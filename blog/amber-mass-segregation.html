@@ -18,6 +18,7 @@
     </script><link rel="stylesheet" href="../assets/css/article.css"><script src="../assets/js/site.js"></script></head>
 
 <body>
+    <canvas id="abm-background" aria-hidden="true"></canvas>
 
     <a href="#main" class="skip-link">Skip to content</a><header class="masthead">
         <div class="container">
@@ -310,6 +311,7 @@ def accelerations(x, y, z, m):
                 <a href="../index.html#blog">
                      Back to all posts
                 </a>
+            <p class="colophon-note">The background is a live agent-based model: boids under a handful of local rules, currently <em id="abm-regime">flocking</em>. Watch for the hawk. <button type="button" id="abm-toggle" class="colophon-toggle" aria-pressed="false">Pause it</button></p>
             </footer>
     </article>
 
@@ -532,6 +534,7 @@ def accelerations(x, y, z, m):
             resize();
         })();
     </script>
+    <script src="../assets/js/abm-background.js"></script>
 </body>
 
 </html>
